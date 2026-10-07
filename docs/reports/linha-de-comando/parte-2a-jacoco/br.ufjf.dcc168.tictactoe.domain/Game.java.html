@@ -1,0 +1,59 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="en"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>Game.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">tic-tac-toe</a> &gt; <a href="index.source.html" class="el_package">br.ufjf.dcc168.tictactoe.domain</a> &gt; <span class="el_source">Game.java</span></div><h1>Game.java</h1><pre class="source lang-java linenums">package br.ufjf.dcc168.tictactoe.domain;
+
+import br.ufjf.dcc168.tictactoe.domain.InvalidMoveException.Reason;
+
+/**
+ * Partida de Jogo da Velha: controla turnos e decide o resultado.
+ *
+ * &lt;p&gt;Regras definidas pelo grupo (Parte I):
+ *
+ * &lt;ul&gt;
+ *   &lt;li&gt;X sempre começa (D1);
+ *   &lt;li&gt;jogada rejeitada não altera tabuleiro, status nem jogador da vez (D4–D7);
+ *   &lt;li&gt;jogadas após o fim da partida são rejeitadas (D7);
+ *   &lt;li&gt;a vitória é verificada antes do empate: vitória na 9ª jogada é vitória (D9).
+ * &lt;/ul&gt;
+ */
+<span class="fc" id="L17">public class Game {</span>
+
+<span class="fc" id="L19">    private final Board board = new Board();</span>
+<span class="fc" id="L20">    private Symbol currentPlayer = Symbol.X;</span>
+<span class="fc" id="L21">    private GameStatus status = GameStatus.IN_PROGRESS;</span>
+
+    /**
+     * Executa a jogada do jogador da vez e, se a partida continuar, passa a vez ao adversário.
+     *
+     * &lt;p&gt;A posição já chega válida: a checagem de limites acontece em {@link Position}.
+     *
+     * @throws InvalidMoveException se a partida já terminou (GAME_ALREADY_FINISHED) ou se a célula
+     *     estiver ocupada (CELL_OCCUPIED)
+     */
+    public void play(Position position) {
+<span class="fc bfc" id="L32" title="All 2 branches covered.">        if (status.isFinished()) {</span>
+<span class="fc" id="L33">            throw new InvalidMoveException(Reason.GAME_ALREADY_FINISHED);</span>
+        }
+<span class="fc" id="L35">        board.place(currentPlayer, position);</span>
+
+<span class="fc bfc" id="L37" title="All 2 branches covered.">        if (board.hasCompleteLine(currentPlayer)) {</span>
+<span class="fc" id="L38">            status = GameStatus.victoryOf(currentPlayer);</span>
+<span class="fc bfc" id="L39" title="All 2 branches covered.">        } else if (board.isFull()) {</span>
+<span class="fc" id="L40">            status = GameStatus.DRAW;</span>
+        } else {
+<span class="fc" id="L42">            currentPlayer = currentPlayer.opponent();</span>
+        }
+<span class="fc" id="L44">    }</span>
+
+    /** Jogador da vez. Depois do fim da partida, continua sendo quem fez a última jogada. */
+    public Symbol getCurrentPlayer() {
+<span class="fc" id="L48">        return currentPlayer;</span>
+    }
+
+    public GameStatus getStatus() {
+<span class="fc" id="L52">        return status;</span>
+    }
+
+    public Board getBoard() {
+<span class="fc" id="L56">        return board;</span>
+    }
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.12.202403310830</span></div></body></html>

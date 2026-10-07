@@ -90,6 +90,17 @@ src/test/java/br/ufjf/dcc168/tictactoe/
 | `docs/defeitos.md` | Registro dos defeitos encontrados pelos conjuntos de teste, com correção e reteste |
 | `docs/cobertura-estrutural.md` | Cobertura de fluxo de controle (JaCoCo) e de dados (BA-DUA) nas Partes II-A e II-B, e os pares def-uso infactíveis |
 | `docs/mutantes-equivalentes.md` | Escores do PITest nas Partes III-A e III-B, mutantes mortos pelos casos de mutação e justificativa dos equivalentes |
+| `docs/relatorio-final.md` | Rascunho do relatório final (Partes II e III) para passar ao Google Drive |
+| `docs/reports/linha-de-comando/` | Relatórios do JaCoCo, BA-DUA e PITest de cada etapa, como referência até sair a exportação do Eclipse |
+
+## Entrega
+
+Depois de importar o projeto no Eclipse e colocar em `docs/reports/` as exportações do EclEmma,
+do Baduíno e os screenshots do PIT Summary, e o relatório em `docs/relatorio-final.pdf`:
+
+```bash
+scripts/empacotar-entrega.sh parte-2   # gera entrega/DCC168-JogoDaVelha-parte-2.zip
+```
 
 ## Artefatos do relatório (gerados automaticamente)
 

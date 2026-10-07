@@ -2,6 +2,9 @@
 target/
 bin/
 
+# Zip de entrega (scripts/empacotar-entrega.sh)
+entrega/
+
 # Artefatos gerados (rodar o ReportGenerator)
 docs/reports/generated/
 
