@@ -20,14 +20,35 @@ Projeto Maven que abre igual no Eclipse, IntelliJ e VS Code.
 ## Comandos
 
 ```bash
-mvn test                                              # compila, formata e roda os testes
-mvn fmt:format                                        # só formata o código
-mvn exec:java                                         # joga no console
-mvn test-compile exec:java@report                     # gera tabelas e grafo do relatório
-mvn test-compile org.pitest:pitest-maven:mutationCoverage   # teste de mutação (Parte III)
+mvn test                                   # compila, formata e roda os testes
+mvn verify                                 # + relatório de cobertura JaCoCo
+mvn test -Dtest=FunctionalSuite            # só o TestSet-Func
+mvn verify -Dtest=FunctionalSuite          # cobertura só do TestSet-Func (Parte II-A)
+mvn fmt:format                             # só formata o código
+mvn -q exec:java                           # joga no console (Ctrl+D / Ctrl+Z encerra)
+mvn test-compile exec:java@report          # gera tabelas e grafo do relatório
 ```
 
-O relatório do PITest sai em `target/pit-reports/index.html`.
+### Cobertura (JaCoCo)
+
+`mvn verify` gera `target/site/jacoco/index.html`. O JaCoCo usa o mesmo motor do EclEmma e serve
+para acompanhar a cobertura pela linha de comando; os relatórios entregues continuam sendo os do
+EclEmma e do Baduíno, no Eclipse.
+
+### Teste de mutação (PITest)
+
+O PITest muta só o pacote `domain` e sempre precisa de `-DtargetTests` com os conjuntos de teste
+da etapa:
+
+```bash
+# Parte III-A: TestSet-Func + TestSet-Estr
+mvn test-compile org.pitest:pitest-maven:mutationCoverage -DtargetTests="br.ufjf.dcc168.tictactoe.functional.*,br.ufjf.dcc168.tictactoe.structural.*"
+
+# Parte III-B: + testes de mutação
+mvn test-compile org.pitest:pitest-maven:mutationCoverage -DtargetTests="br.ufjf.dcc168.tictactoe.functional.*,br.ufjf.dcc168.tictactoe.structural.*,br.ufjf.dcc168.tictactoe.mutation.*"
+```
+
+O relatório sai em `target/pit-reports/index.html`.
 
 ## Estrutura
 
@@ -47,7 +68,7 @@ src/test/java/br/ufjf/dcc168/tictactoe/
 ├── specification/  O QUE O GRUPO ESCREVE: classes de equivalência e grafo de causa-efeito
 ├── causeeffect/    modelo do grafo, tabela de decisão e exportação para .dot
 ├── report/         @TestCase e ReportGenerator (gera tabelas, .dot e .png)
-└── support/        ScriptedInputReader e RecordingOutputPrinter (dublês de teste)
+└── support/        ScriptedInputReader, RecordingOutputPrinter (dublês) e Moves (jogadas)
 ```
 
 ### Qual suite rodar em cada etapa
@@ -56,15 +77,16 @@ src/test/java/br/ufjf/dcc168/tictactoe/
 |-------------|--------------------------------|-------------------------|
 | Parte II-A  | `FunctionalSuite`              | EclEmma + Baduíno       |
 | Parte II-B  | `FunctionalAndStructuralSuite` | EclEmma + Baduíno       |
-| Parte III-A | `FunctionalAndStructuralSuite` | PITest                  |
-| Parte III-B | `AllTestsSuite`                | PITest                  |
+| Parte III-A | `FunctionalAndStructuralSuite` | PITest (`-DtargetTests`)|
+| Parte III-B | `AllTestsSuite`                | PITest (`-DtargetTests`)|
 
-## Especificação da Parte I
+## Documentos
 
-`docs/parte-1/especificacao-parte-1.md`: decisões do grupo, classes de equivalência, valores
-limite, grafo de causa-efeito, tabela de decisão e os 21 casos de teste do TestSet-Func.
-O código em `specification/` ainda usa a numeração antiga de exemplo e precisa ser alinhado
-a esse documento quando os testes forem implementados.
+| Documento | Conteúdo |
+|---|---|
+| `docs/parte-1/especificacao-parte-1.md` | Parte I: decisões do grupo, classes de equivalência, valores limite, grafo de causa-efeito, tabela de decisão e os 21 casos de teste do TestSet-Func (o oráculo de teste) |
+| `docs/SPEC.md` | Especificação de implementação: contratos de cada classe, fases e critérios de aceite |
+| `docs/defeitos.md` | Registro dos defeitos encontrados pelos conjuntos de teste, com correção e reteste |
 
 ## Artefatos do relatório (gerados automaticamente)
 
@@ -107,12 +129,12 @@ esperada; se falhou, mostra `FALHOU – <mensagem>`; se está com `@Ignore`, mos
 
 ```java
 @TestCase(
-        id = "CT02",
-        input = "<X:(0,0), O:(0,0)>",
-        expected = "InvalidMoveException (CELL_OCCUPIED)",
-        classes = {V1, V2, I5, V4})
+        id = "CT13",
+        input = "<X(0,0), O(0,0)>",
+        expected = "2ª jogada rejeitada: CELL_OCCUPIED; célula (0,0) continua com X; vez de O",
+        classes = {V1, V2, V3, I7, V5})
 @Test
-public void ct02_moveOnOccupiedCell_throwsInvalidMove() { ... }
+public void ct13_moveOnOccupiedCell_rejectedCellOccupied() { ... }
 ```
 
 ## Convenções do time
@@ -121,7 +143,7 @@ public void ct02_moveOnOccupiedCell_throwsInvalidMove() { ... }
 - **Legibilidade primeiro:** nomes descritivos, métodos curtos, nada de abreviação.
 - **Formatação não se discute:** o build formata tudo (google-java-format, estilo AOSP, 4 espaços).
   Rodem `mvn fmt:format` antes de cada commit.
-- **Nome de teste:** `ct07_moveOnOccupiedCell_throwsInvalidMove` → ID da Tabela 2 + cenário + resultado.
+- **Nome de teste:** `ct13_moveOnOccupiedCell_rejectedCellOccupied` → ID da Tabela 2 + cenário + resultado.
 - **Domínio sem I/O:** `Scanner` e `System.out` só existem em `io/` e `Main`.
 
 ## Regras definidas pelo grupo (entram na Parte I)
