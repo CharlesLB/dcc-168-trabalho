@@ -33,6 +33,12 @@ public @interface TestCase {
     /** Coluna "Saída Esperada". */
     String expected();
 
-    /** Coluna "Classes Eq. Exercitadas". */
-    EquivalenceClass[] classes();
+    /** Coluna "Classes Eq. Exercitadas" (TestSet-Func). */
+    EquivalenceClass[] classes() default {};
+
+    /**
+     * Requisito estrutural coberto (TestSet-Estr), ex.: "Position.toString, linha 42". Aparece na
+     * Tabela 2 no lugar das classes de equivalência.
+     */
+    String requirement() default "";
 }
