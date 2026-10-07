@@ -31,6 +31,12 @@ public class Board {
         throw new UnsupportedOperationException("TODO");
     }
 
+    /** Quantidade de células preenchidas (0 a 9). */
+    public int countFilledCells() {
+        // TODO
+        throw new UnsupportedOperationException("TODO");
+    }
+
     /** Indica se todas as nove células estão preenchidas. */
     public boolean isFull() {
         // TODO

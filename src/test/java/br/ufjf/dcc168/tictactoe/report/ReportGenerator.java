@@ -6,6 +6,7 @@ import br.ufjf.dcc168.tictactoe.causeeffect.DecisionTable;
 import br.ufjf.dcc168.tictactoe.causeeffect.DotExporter;
 import br.ufjf.dcc168.tictactoe.causeeffect.GraphvizRenderer;
 import br.ufjf.dcc168.tictactoe.causeeffect.Node;
+import br.ufjf.dcc168.tictactoe.functional.ConsoleFunctionalTest;
 import br.ufjf.dcc168.tictactoe.functional.GameFunctionalTest;
 import br.ufjf.dcc168.tictactoe.mutation.GameMutationTest;
 import br.ufjf.dcc168.tictactoe.specification.CauseEffectSpecification;
@@ -54,7 +55,11 @@ public final class ReportGenerator {
     private static final String GRAPH_FILE_NAME = "grafo-causa-efeito";
 
     private static final TestSet FUNCTIONAL =
-            new TestSet("TestSet-Func", "testset-func", GameFunctionalTest.class);
+            new TestSet(
+                    "TestSet-Func",
+                    "testset-func",
+                    GameFunctionalTest.class,
+                    ConsoleFunctionalTest.class);
     private static final TestSet STRUCTURAL =
             new TestSet("TestSet-Estr", "testset-estr", GameStructuralTest.class);
     private static final TestSet MUTATION =
