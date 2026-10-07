@@ -89,6 +89,7 @@ src/test/java/br/ufjf/dcc168/tictactoe/
 | `docs/SPEC.md` | Especificação de implementação: contratos de cada classe, fases e critérios de aceite |
 | `docs/defeitos.md` | Registro dos defeitos encontrados pelos conjuntos de teste, com correção e reteste |
 | `docs/cobertura-estrutural.md` | Cobertura de fluxo de controle (JaCoCo) e de dados (BA-DUA) nas Partes II-A e II-B, e os pares def-uso infactíveis |
+| `docs/mutantes-equivalentes.md` | Escores do PITest nas Partes III-A e III-B, mutantes mortos pelos casos de mutação e justificativa dos equivalentes |
 
 ## Artefatos do relatório (gerados automaticamente)
 

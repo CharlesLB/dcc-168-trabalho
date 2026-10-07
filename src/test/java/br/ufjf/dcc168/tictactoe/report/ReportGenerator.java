@@ -71,7 +71,7 @@ public final class ReportGenerator {
             new TestSet(
                     "Casos do Teste de Mutação",
                     "testset-mutacao",
-                    Coverage.EQUIVALENCE_CLASSES,
+                    Coverage.TARGET_MUTANT,
                     GameMutationTest.class);
 
     private static final List<TestSet> ALL_TEST_SETS =
@@ -279,13 +279,13 @@ public final class ReportGenerator {
         return digits.isEmpty() ? Integer.MAX_VALUE : Integer.parseInt(digits);
     }
 
-    // TestSet-Func: classes de equivalência; TestSet-Estr: requisito estrutural (ramo, par
-    // def-uso).
+    // TestSet-Func: classes de equivalência; TestSet-Estr e mutação: o requisito (ramo, par
+    // def-uso ou mutante alvo).
     private static String describeCoverage(TestSet testSet, TestCase testCase) {
-        if (testSet.coverage == Coverage.STRUCTURAL_REQUIREMENT) {
-            return testCase.requirement();
+        if (testSet.coverage == Coverage.EQUIVALENCE_CLASSES) {
+            return joinClassNames(testCase.classes());
         }
-        return joinClassNames(testCase.classes());
+        return testCase.requirement();
     }
 
     private static String joinClassNames(EquivalenceClass[] classes) {
@@ -385,7 +385,8 @@ public final class ReportGenerator {
     /** O que a Tabela 2 mostra como cobertura de cada caso. */
     private enum Coverage {
         EQUIVALENCE_CLASSES("Classes Eq. Exercitadas"),
-        STRUCTURAL_REQUIREMENT("Requisito Estrutural Coberto");
+        STRUCTURAL_REQUIREMENT("Requisito Estrutural Coberto"),
+        TARGET_MUTANT("Mutante Alvo");
 
         final String columnTitle;
 
