@@ -1,15 +1,19 @@
 package br.ufjf.dcc168.tictactoe.specification;
 
 /**
- * Condições de entrada da especificação (coluna "Condição de Entrada" da Tabela 1).
+ * Condições de entrada da especificação (coluna "Condição de Entrada" da Tabela 1 da Parte I).
  *
- * <p>EXEMPLOS: o grupo deve revisar e completar esta lista na Parte I.
+ * <p>A ordem das constantes é a ordem das linhas da Tabela 1. As duas últimas são classes de saída:
+ * particionam o domínio pelas saídas distintas que o programa deve produzir.
  */
 public enum InputCondition {
-    ROW("Linha da jogada"),
-    COLUMN("Coluna da jogada"),
+    INPUT_FORMAT("Formato da entrada"),
+    ROW("Linha (L)"),
+    COLUMN("Coluna (C)"),
     TARGET_CELL("Célula escolhida"),
-    GAME_STATE("Estado da partida");
+    GAME_STATE("Estado da partida"),
+    MOVE_RESULT("Resultado da jogada válida"),
+    WINNING_PLAYER("Jogador que completa a linha");
 
     private final String description;
 
