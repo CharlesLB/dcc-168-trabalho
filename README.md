@@ -24,6 +24,7 @@ mvn test                                   # compila, formata e roda os testes
 mvn verify                                 # + relatório de cobertura JaCoCo
 mvn test -Dtest=FunctionalSuite            # só o TestSet-Func
 mvn verify -Dtest=FunctionalSuite          # cobertura só do TestSet-Func (Parte II-A)
+mvn verify -Dtest=FunctionalAndStructuralSuite  # cobertura do Func + Estr (Parte II-B)
 mvn fmt:format                             # só formata o código
 mvn -q exec:java                           # joga no console (Ctrl+D / Ctrl+Z encerra)
 mvn test-compile exec:java@report          # gera tabelas e grafo do relatório
@@ -87,6 +88,7 @@ src/test/java/br/ufjf/dcc168/tictactoe/
 | `docs/parte-1/especificacao-parte-1.md` | Parte I: decisões do grupo, classes de equivalência, valores limite, grafo de causa-efeito, tabela de decisão e os 21 casos de teste do TestSet-Func (o oráculo de teste) |
 | `docs/SPEC.md` | Especificação de implementação: contratos de cada classe, fases e critérios de aceite |
 | `docs/defeitos.md` | Registro dos defeitos encontrados pelos conjuntos de teste, com correção e reteste |
+| `docs/cobertura-estrutural.md` | Cobertura de fluxo de controle (JaCoCo) e de dados (BA-DUA) nas Partes II-A e II-B, e os pares def-uso infactíveis |
 
 ## Artefatos do relatório (gerados automaticamente)
 

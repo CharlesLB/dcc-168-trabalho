@@ -58,12 +58,21 @@ public final class ReportGenerator {
             new TestSet(
                     "TestSet-Func",
                     "testset-func",
+                    Coverage.EQUIVALENCE_CLASSES,
                     GameFunctionalTest.class,
                     ConsoleFunctionalTest.class);
     private static final TestSet STRUCTURAL =
-            new TestSet("TestSet-Estr", "testset-estr", GameStructuralTest.class);
+            new TestSet(
+                    "TestSet-Estr",
+                    "testset-estr",
+                    Coverage.STRUCTURAL_REQUIREMENT,
+                    GameStructuralTest.class);
     private static final TestSet MUTATION =
-            new TestSet("Casos do Teste de Mutação", "testset-mutacao", GameMutationTest.class);
+            new TestSet(
+                    "Casos do Teste de Mutação",
+                    "testset-mutacao",
+                    Coverage.EQUIVALENCE_CLASSES,
+                    GameMutationTest.class);
 
     private static final List<TestSet> ALL_TEST_SETS =
             Arrays.asList(FUNCTIONAL, STRUCTURAL, MUTATION);
@@ -221,7 +230,7 @@ public final class ReportGenerator {
                         "ID",
                         "Condições de Entrada",
                         "Saída Esp.",
-                        "Classes Eq. Exercitadas",
+                        testSet.coverage.columnTitle,
                         "Saída Obtida");
 
         for (Method method : annotatedTestMethodsSortedById(testSet)) {
@@ -231,7 +240,7 @@ public final class ReportGenerator {
                     testCase.id(),
                     testCase.input(),
                     testCase.expected(),
-                    joinClassNames(testCase.classes()),
+                    describeCoverage(testSet, testCase),
                     describeObtainedOutput(testCase, outcome));
         }
         return table;
@@ -268,6 +277,15 @@ public final class ReportGenerator {
     private static int idNumber(Method method) {
         String digits = method.getAnnotation(TestCase.class).id().replaceAll("\\D", "");
         return digits.isEmpty() ? Integer.MAX_VALUE : Integer.parseInt(digits);
+    }
+
+    // TestSet-Func: classes de equivalência; TestSet-Estr: requisito estrutural (ramo, par
+    // def-uso).
+    private static String describeCoverage(TestSet testSet, TestCase testCase) {
+        if (testSet.coverage == Coverage.STRUCTURAL_REQUIREMENT) {
+            return testCase.requirement();
+        }
+        return joinClassNames(testCase.classes());
     }
 
     private static String joinClassNames(EquivalenceClass[] classes) {
@@ -364,15 +382,29 @@ public final class ReportGenerator {
         }
     }
 
+    /** O que a Tabela 2 mostra como cobertura de cada caso. */
+    private enum Coverage {
+        EQUIVALENCE_CLASSES("Classes Eq. Exercitadas"),
+        STRUCTURAL_REQUIREMENT("Requisito Estrutural Coberto");
+
+        final String columnTitle;
+
+        Coverage(String columnTitle) {
+            this.columnTitle = columnTitle;
+        }
+    }
+
     /** Um conjunto de teste do trabalho e as classes JUnit que o implementam. */
     private static final class TestSet {
         final String name;
         final String fileSuffix;
+        final Coverage coverage;
         final Class<?>[] testClasses;
 
-        TestSet(String name, String fileSuffix, Class<?>... testClasses) {
+        TestSet(String name, String fileSuffix, Coverage coverage, Class<?>... testClasses) {
             this.name = name;
             this.fileSuffix = fileSuffix;
+            this.coverage = coverage;
             this.testClasses = testClasses;
         }
     }
