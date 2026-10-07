@@ -1,10 +1,13 @@
 package br.ufjf.dcc168.tictactoe.domain;
 
+import br.ufjf.dcc168.tictactoe.domain.InvalidMoveException.Reason;
+
 /**
- * Coordenada de uma célula do tabuleiro (objeto de valor imutável).
+ * Coordenada válida de uma célula do tabuleiro (objeto de valor imutável).
  *
- * <p>Convenção: linhas e colunas numeradas de 0 a 2. Se o grupo decidir usar 1 a 3, a conversão
- * deve acontecer na camada de console, nunca aqui.
+ * <p>Convenção: linhas e colunas numeradas de 0 a 2 (D2). Como a validação acontece na construção,
+ * uma posição fora do tabuleiro é rejeitada antes de chegar ao Game, mesmo com a partida encerrada
+ * (D8).
  */
 public final class Position {
 
@@ -19,7 +22,9 @@ public final class Position {
      *     fora do intervalo [0, 2]
      */
     public Position(int row, int column) {
-        // TODO: validar os limites de row e column
+        if (isOutOfBounds(row) || isOutOfBounds(column)) {
+            throw new InvalidMoveException(Reason.POSITION_OUT_OF_BOUNDS);
+        }
         this.row = row;
         this.column = column;
     }
@@ -32,10 +37,12 @@ public final class Position {
         return column;
     }
 
-    // TODO: implementar equals e hashCode (posições com mesma linha e coluna são iguais)
-
     @Override
     public String toString() {
         return "(" + row + ", " + column + ")";
+    }
+
+    private static boolean isOutOfBounds(int index) {
+        return index < MIN_INDEX || index > MAX_INDEX;
     }
 }
