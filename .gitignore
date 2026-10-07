@@ -1,0 +1,24 @@
+# Build
+target/
+bin/
+
+# Artefatos gerados (rodar o ReportGenerator)
+docs/reports/generated/
+
+# Eclipse (gerado ao importar; incluir no zip de entrega, não no Git)
+.project
+.classpath
+.settings/
+.metadata/
+
+# IntelliJ
+.idea/
+*.iml
+out/
+
+# VS Code
+.vscode/
+
+# Sistema operacional
+.DS_Store
+Thumbs.db

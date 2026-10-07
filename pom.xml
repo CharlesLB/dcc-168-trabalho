@@ -1,0 +1,111 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project xmlns="http://maven.apache.org/POM/4.0.0"
+         xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+  <modelVersion>4.0.0</modelVersion>
+
+  <groupId>br.ufjf.dcc168</groupId>
+  <artifactId>tic-tac-toe</artifactId>
+  <version>1.0.0</version>
+  <packaging>jar</packaging>
+
+  <properties>
+    <!-- Java 8 por compatibilidade com o Baduíno -->
+    <maven.compiler.source>1.8</maven.compiler.source>
+    <maven.compiler.target>1.8</maven.compiler.target>
+    <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+  </properties>
+
+  <dependencies>
+    <dependency>
+      <groupId>junit</groupId>
+      <artifactId>junit</artifactId>
+      <version>4.13.2</version>
+      <scope>test</scope>
+    </dependency>
+  </dependencies>
+
+  <build>
+    <plugins>
+      <!--
+        mvn exec:java                     → joga no console
+        mvn test-compile exec:java@report → gera tabelas e grafo em docs/reports/generated
+      -->
+      <plugin>
+        <groupId>org.codehaus.mojo</groupId>
+        <artifactId>exec-maven-plugin</artifactId>
+        <version>3.5.0</version>
+        <configuration>
+          <mainClass>br.ufjf.dcc168.tictactoe.Main</mainClass>
+        </configuration>
+        <executions>
+          <execution>
+            <id>report</id>
+            <configuration>
+              <mainClass>br.ufjf.dcc168.tictactoe.report.ReportGenerator</mainClass>
+              <classpathScope>test</classpathScope>
+            </configuration>
+          </execution>
+        </executions>
+      </plugin>
+
+      <!-- Teste de mutação: mvn test-compile org.pitest:pitest-maven:mutationCoverage -->
+      <plugin>
+        <groupId>org.pitest</groupId>
+        <artifactId>pitest-maven</artifactId>
+        <version>1.15.8</version>
+        <configuration>
+          <!-- Muta apenas o domínio; I/O de console só geraria mutantes irrelevantes -->
+          <targetClasses>
+            <param>br.ufjf.dcc168.tictactoe.domain.*</param>
+          </targetClasses>
+          <targetTests>
+            <param>br.ufjf.dcc168.tictactoe.*</param>
+          </targetTests>
+          <!-- Equivalente ao "Full Mutation" pedido no enunciado -->
+          <mutators>
+            <mutator>ALL</mutator>
+          </mutators>
+          <outputFormats>
+            <param>HTML</param>
+          </outputFormats>
+          <timestampedReports>false</timestampedReports>
+        </configuration>
+      </plugin>
+    </plugins>
+  </build>
+
+  <profiles>
+    <!--
+      Formatação automática (google-java-format, estilo AOSP = 4 espaços).
+      Roda sozinha em todo build (mvn compile/test) e pode ser chamada com: mvn fmt:format
+      O formatter exige JDK 17+ para rodar; com JDK mais antigo o perfil fica desligado
+      e o build continua funcionando, só sem formatar.
+    -->
+    <profile>
+      <id>format</id>
+      <activation>
+        <jdk>[17,)</jdk>
+      </activation>
+      <build>
+        <plugins>
+          <plugin>
+            <groupId>com.spotify.fmt</groupId>
+            <artifactId>fmt-maven-plugin</artifactId>
+            <version>2.29</version>
+            <configuration>
+              <style>aosp</style>
+            </configuration>
+            <executions>
+              <execution>
+                <goals>
+                  <goal>format</goal>
+                </goals>
+              </execution>
+            </executions>
+          </plugin>
+        </plugins>
+      </build>
+    </profile>
+  </profiles>
+</project>
