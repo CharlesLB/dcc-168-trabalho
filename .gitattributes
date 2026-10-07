@@ -1,0 +1,4 @@
+# Evita diffs gigantes por causa de CRLF (Windows) x LF (Linux/macOS)
+* text=auto eol=lf
+*.jar binary
+*.png binary
