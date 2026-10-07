@@ -128,13 +128,25 @@ public final class ReportGenerator {
     }
 
     private String joinClasses(InputCondition condition, boolean valid) {
-        String joined =
+        List<String> classTexts =
                 Arrays.stream(EquivalenceClass.values())
                         .filter(eqClass -> eqClass.getCondition() == condition)
                         .filter(eqClass -> eqClass.isValid() == valid)
                         .map(EquivalenceClass::toTableText)
-                        .collect(Collectors.joining(" e "));
-        return joined.isEmpty() ? "–" : joined;
+                        .collect(Collectors.toList());
+        return classTexts.isEmpty() ? "–" : joinWithAnd(classTexts);
+    }
+
+    /**
+     * Junta os itens como na Tabela 1 da Parte I: vírgula entre eles e " e " antes do último. Ex.:
+     * "a (V6), b (V7) e c (V8)".
+     */
+    static String joinWithAnd(List<String> items) {
+        int lastIndex = items.size() - 1;
+        if (lastIndex == 0) {
+            return items.get(0);
+        }
+        return String.join(", ", items.subList(0, lastIndex)) + " e " + items.get(lastIndex);
     }
 
     // ---------------------------------------------------------------- Grafo de causa-efeito
@@ -209,7 +221,7 @@ public final class ReportGenerator {
 
         for (Method method : annotatedTestMethodsSortedById(testSet)) {
             TestCase testCase = method.getAnnotation(TestCase.class);
-            TestOutcome outcome = outcomes.outcomeOf(testSet.testClass, method.getName());
+            TestOutcome outcome = outcomes.outcomeOf(method.getDeclaringClass(), method.getName());
             table.addRow(
                     testCase.id(),
                     testCase.input(),
@@ -224,21 +236,23 @@ public final class ReportGenerator {
         OutcomeCollector collector = new OutcomeCollector();
         JUnitCore junit = new JUnitCore();
         junit.addListener(collector);
-        junit.run(testSet.testClass);
+        junit.run(testSet.testClasses);
         return collector;
     }
 
     private List<Method> annotatedTestMethodsSortedById(TestSet testSet) {
         List<Method> annotated = new ArrayList<>();
-        for (Method method : testSet.testClass.getMethods()) {
-            if (method.isAnnotationPresent(TestCase.class)) {
-                annotated.add(method);
-            } else if (method.isAnnotationPresent(Test.class)) {
-                warnings.add(
-                        testSet.name
-                                + ": "
-                                + method.getName()
-                                + " não tem @TestCase e ficou fora da tabela");
+        for (Class<?> testClass : testSet.testClasses) {
+            for (Method method : testClass.getMethods()) {
+                if (method.isAnnotationPresent(TestCase.class)) {
+                    annotated.add(method);
+                } else if (method.isAnnotationPresent(Test.class)) {
+                    warnings.add(
+                            testSet.name
+                                    + ": "
+                                    + method.getName()
+                                    + " não tem @TestCase e ficou fora da tabela");
+                }
             }
         }
         annotated.sort(Comparator.comparingInt(ReportGenerator::idNumber));
@@ -292,7 +306,8 @@ public final class ReportGenerator {
     }
 
     private static List<TestCase> testCasesOf(TestSet testSet) {
-        return Arrays.stream(testSet.testClass.getMethods())
+        return Arrays.stream(testSet.testClasses)
+                .flatMap(testClass -> Arrays.stream(testClass.getMethods()))
                 .map(method -> method.getAnnotation(TestCase.class))
                 .filter(testCase -> testCase != null)
                 .collect(Collectors.toList());
@@ -344,16 +359,16 @@ public final class ReportGenerator {
         }
     }
 
-    /** Um conjunto de teste do trabalho e a classe JUnit que o implementa. */
+    /** Um conjunto de teste do trabalho e as classes JUnit que o implementam. */
     private static final class TestSet {
         final String name;
         final String fileSuffix;
-        final Class<?> testClass;
+        final Class<?>[] testClasses;
 
-        TestSet(String name, String fileSuffix, Class<?> testClass) {
+        TestSet(String name, String fileSuffix, Class<?>... testClasses) {
             this.name = name;
             this.fileSuffix = fileSuffix;
-            this.testClass = testClass;
+            this.testClasses = testClasses;
         }
     }
 }

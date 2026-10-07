@@ -2,33 +2,48 @@ package br.ufjf.dcc168.tictactoe.specification;
 
 import static br.ufjf.dcc168.tictactoe.specification.InputCondition.COLUMN;
 import static br.ufjf.dcc168.tictactoe.specification.InputCondition.GAME_STATE;
+import static br.ufjf.dcc168.tictactoe.specification.InputCondition.INPUT_FORMAT;
+import static br.ufjf.dcc168.tictactoe.specification.InputCondition.MOVE_RESULT;
 import static br.ufjf.dcc168.tictactoe.specification.InputCondition.ROW;
 import static br.ufjf.dcc168.tictactoe.specification.InputCondition.TARGET_CELL;
+import static br.ufjf.dcc168.tictactoe.specification.InputCondition.WINNING_PLAYER;
 
 /**
- * Catálogo das classes de equivalência: fonte única da Tabela 1.
+ * Catálogo das classes de equivalência: fonte única da Tabela 1 da Parte I (seção 3.2).
  *
  * <p>Convenção: o nome começa com V (válida) ou I (inválida), igual à notação da Tabela 1. Como os
  * testes referenciam estas constantes em {@link
  * br.ufjf.dcc168.tictactoe.report.TestCase#classes()}, um erro de digitação vira erro de compilação
  * em vez de um erro no relatório.
- *
- * <p>EXEMPLOS: o grupo deve revisar e completar esta lista na Parte I.
  */
 public enum EquivalenceClass {
-    V1(ROW, "0 ≤ linha ≤ 2"),
-    I1(ROW, "linha < 0"),
-    I2(ROW, "linha > 2"),
+    V1(INPUT_FORMAT, "dois inteiros separados por espaço"),
+    I1(INPUT_FORMAT, "quantidade de valores ≠ 2"),
+    I2(INPUT_FORMAT, "valor não inteiro"),
 
-    V2(COLUMN, "0 ≤ coluna ≤ 2"),
-    I3(COLUMN, "coluna < 0"),
-    I4(COLUMN, "coluna > 2"),
+    V2(ROW, "0 ≤ L ≤ 2"),
+    I3(ROW, "L < 0"),
+    I4(ROW, "L > 2"),
 
-    V3(TARGET_CELL, "célula vazia"),
-    I5(TARGET_CELL, "célula ocupada"),
+    V3(COLUMN, "0 ≤ C ≤ 2"),
+    I5(COLUMN, "C < 0"),
+    I6(COLUMN, "C > 2"),
 
-    V4(GAME_STATE, "partida em andamento"),
-    I6(GAME_STATE, "partida encerrada (vitória ou empate)");
+    V4(TARGET_CELL, "vazia"),
+    I7(TARGET_CELL, "ocupada"),
+
+    V5(GAME_STATE, "em andamento"),
+    I8(GAME_STATE, "encerrada – vitória ou empate"),
+
+    V6(MOVE_RESULT, "completa linha horizontal"),
+    V7(MOVE_RESULT, "completa coluna"),
+    V8(MOVE_RESULT, "completa diagonal principal"),
+    V9(MOVE_RESULT, "completa diagonal secundária"),
+    V10(MOVE_RESULT, "preenche a última célula sem formar linha – empate"),
+    V11(MOVE_RESULT, "não completa linha nem preenche o tabuleiro – partida continua"),
+
+    V12(WINNING_PLAYER, "X"),
+    V13(WINNING_PLAYER, "O");
 
     private final InputCondition condition;
     private final String description;
@@ -50,7 +65,7 @@ public enum EquivalenceClass {
         return name().startsWith("V");
     }
 
-    /** Texto usado na Tabela 1, ex.: "linha < 0 (I1)". */
+    /** Texto usado na Tabela 1, ex.: "L < 0 (I3)". */
     public String toTableText() {
         return description + " (" + name() + ")";
     }

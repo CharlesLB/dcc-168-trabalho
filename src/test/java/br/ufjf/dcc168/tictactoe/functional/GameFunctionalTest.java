@@ -1,10 +1,13 @@
 package br.ufjf.dcc168.tictactoe.functional;
 
-import static br.ufjf.dcc168.tictactoe.specification.EquivalenceClass.I5;
+import static br.ufjf.dcc168.tictactoe.specification.EquivalenceClass.I7;
 import static br.ufjf.dcc168.tictactoe.specification.EquivalenceClass.V1;
+import static br.ufjf.dcc168.tictactoe.specification.EquivalenceClass.V12;
 import static br.ufjf.dcc168.tictactoe.specification.EquivalenceClass.V2;
 import static br.ufjf.dcc168.tictactoe.specification.EquivalenceClass.V3;
 import static br.ufjf.dcc168.tictactoe.specification.EquivalenceClass.V4;
+import static br.ufjf.dcc168.tictactoe.specification.EquivalenceClass.V5;
+import static br.ufjf.dcc168.tictactoe.specification.EquivalenceClass.V6;
 
 import static org.junit.Assert.assertEquals;
 
@@ -31,7 +34,7 @@ public class GameFunctionalTest {
             id = "CT01",
             input = "<X:(0,0), O:(1,0), X:(0,1), O:(1,1), X:(0,2)>",
             expected = "X_WINS",
-            classes = {V1, V2, V3, V4})
+            classes = {V1, V2, V3, V4, V5, V6, V12})
     @Ignore("Game.play ainda não implementado")
     @Test
     public void ct01_xCompletesTopRow_xWins() {
@@ -50,7 +53,7 @@ public class GameFunctionalTest {
             id = "CT02",
             input = "<X:(0,0), O:(0,0)>",
             expected = "InvalidMoveException (CELL_OCCUPIED)",
-            classes = {V1, V2, I5, V4})
+            classes = {V1, V2, V3, I7, V5})
     @Ignore("Game.play ainda não implementado")
     @Test
     public void ct02_moveOnOccupiedCell_throwsInvalidMove() {
