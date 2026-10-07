@@ -3,6 +3,7 @@ package br.ufjf.dcc168.tictactoe.console;
 import br.ufjf.dcc168.tictactoe.domain.Game;
 import br.ufjf.dcc168.tictactoe.domain.GameStatus;
 import br.ufjf.dcc168.tictactoe.domain.InvalidMoveException;
+import br.ufjf.dcc168.tictactoe.io.InputExhaustedException;
 import br.ufjf.dcc168.tictactoe.io.InputReader;
 import br.ufjf.dcc168.tictactoe.io.OutputPrinter;
 
@@ -26,13 +27,30 @@ public class ConsoleGame {
         this.renderer = new BoardRenderer(printer);
     }
 
-    /** Executa a partida até haver vitória ou empate. */
+    /**
+     * Executa a partida até haver vitória ou empate.
+     *
+     * <p>Se a entrada acabar antes (Ctrl+D/Ctrl+Z no console, ou fim do roteiro num teste), avisa
+     * que a partida foi interrompida e retorna normalmente.
+     */
     public void run() {
         printer.printLine("Jogo da Velha");
+        try {
+            playUntilFinished();
+            showResult();
+        } catch (InputExhaustedException endOfInput) {
+            printer.printLine("Entrada encerrada. Partida interrompida.");
+        }
+    }
+
+    private void playUntilFinished() {
         while (!game.getStatus().isFinished()) {
             renderer.render(game.getBoard());
             playOneTurn();
         }
+    }
+
+    private void showResult() {
         renderer.render(game.getBoard());
         printer.printLine(describeResult(game.getStatus()));
     }
