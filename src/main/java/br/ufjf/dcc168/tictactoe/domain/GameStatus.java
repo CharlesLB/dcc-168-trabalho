@@ -11,4 +11,9 @@ public enum GameStatus {
     public boolean isFinished() {
         return this != IN_PROGRESS;
     }
+
+    /** Status de vitória do jogador informado: X → X_WINS, O → O_WINS. */
+    public static GameStatus victoryOf(Symbol winner) {
+        return winner == Symbol.X ? X_WINS : O_WINS;
+    }
 }
