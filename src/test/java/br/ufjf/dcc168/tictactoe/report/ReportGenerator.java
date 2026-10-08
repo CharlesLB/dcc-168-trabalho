@@ -8,11 +8,9 @@ import br.ufjf.dcc168.tictactoe.causeeffect.GraphvizRenderer;
 import br.ufjf.dcc168.tictactoe.causeeffect.Node;
 import br.ufjf.dcc168.tictactoe.functional.ConsoleFunctionalTest;
 import br.ufjf.dcc168.tictactoe.functional.GameFunctionalTest;
-import br.ufjf.dcc168.tictactoe.mutation.GameMutationTest;
 import br.ufjf.dcc168.tictactoe.specification.CauseEffectSpecification;
 import br.ufjf.dcc168.tictactoe.specification.EquivalenceClass;
 import br.ufjf.dcc168.tictactoe.specification.InputCondition;
-import br.ufjf.dcc168.tictactoe.structural.GameStructuralTest;
 
 import org.junit.Test;
 import org.junit.runner.JUnitCore;
@@ -58,25 +56,8 @@ public final class ReportGenerator {
             new TestSet(
                     "TestSet-Func",
                     "testset-func",
-                    Coverage.EQUIVALENCE_CLASSES,
                     GameFunctionalTest.class,
                     ConsoleFunctionalTest.class);
-    private static final TestSet STRUCTURAL =
-            new TestSet(
-                    "TestSet-Estr",
-                    "testset-estr",
-                    Coverage.STRUCTURAL_REQUIREMENT,
-                    GameStructuralTest.class);
-    private static final TestSet MUTATION =
-            new TestSet(
-                    "Casos do Teste de Mutação",
-                    "testset-mutacao",
-                    Coverage.TARGET_MUTANT,
-                    GameMutationTest.class);
-
-    private static final List<TestSet> ALL_TEST_SETS =
-            Arrays.asList(FUNCTIONAL, STRUCTURAL, MUTATION);
-
     private final Path outputDirectory;
     private final List<String> generatedFiles = new ArrayList<>();
     private final List<String> warnings = new ArrayList<>();
@@ -104,19 +85,15 @@ public final class ReportGenerator {
         Table decisionTable = buildDecisionTable(DecisionTable.from(graph));
         write("tabela-decisao-causa-efeito.md", decisionTable.toMarkdown());
 
-        List<Table> testCaseTables = new ArrayList<>();
-        for (TestSet testSet : ALL_TEST_SETS) {
-            Table table = buildTestCaseTable(testSet);
-            testCaseTables.add(table);
-            write("tabela-2-" + testSet.fileSuffix + ".md", table.toMarkdown());
-        }
+        Table testCaseTable = buildTestCaseTable(FUNCTIONAL);
+        write("tabela-2-" + FUNCTIONAL.fileSuffix + ".md", testCaseTable.toMarkdown());
 
         write(
                 "relatorio.md",
                 buildFullReport(
-                        equivalenceClassTable, graphImageCreated, decisionTable, testCaseTables));
+                        equivalenceClassTable, graphImageCreated, decisionTable, testCaseTable));
 
-        checkUniqueIds();
+        checkUniqueIds(FUNCTIONAL);
         checkEveryClassIsExercisedBy(FUNCTIONAL);
         printSummary();
     }
@@ -229,7 +206,7 @@ public final class ReportGenerator {
                         "ID",
                         "Condições de Entrada",
                         "Saída Esp.",
-                        testSet.coverage.columnTitle,
+                        "Classes Eq. Exercitadas",
                         "Saída Obtida");
 
         for (Method method : annotatedTestMethodsSortedById(testSet)) {
@@ -239,7 +216,7 @@ public final class ReportGenerator {
                     testCase.id(),
                     testCase.input(),
                     testCase.expected(),
-                    describeCoverage(testSet, testCase),
+                    joinClassNames(testCase.classes()),
                     describeObtainedOutput(testCase, outcome));
         }
         return table;
@@ -278,15 +255,6 @@ public final class ReportGenerator {
         return digits.isEmpty() ? Integer.MAX_VALUE : Integer.parseInt(digits);
     }
 
-    // TestSet-Func: classes de equivalência; TestSet-Estr e mutação: o requisito (ramo, par
-    // def-uso ou mutante alvo).
-    private static String describeCoverage(TestSet testSet, TestCase testCase) {
-        if (testSet.coverage == Coverage.EQUIVALENCE_CLASSES) {
-            return joinClassNames(testCase.classes());
-        }
-        return testCase.requirement();
-    }
-
     private static String joinClassNames(EquivalenceClass[] classes) {
         return Arrays.stream(classes).map(Enum::name).collect(Collectors.joining(", "));
     }
@@ -305,13 +273,11 @@ public final class ReportGenerator {
 
     // ---------------------------------------------------------------- Verificações
 
-    private void checkUniqueIds() {
+    private void checkUniqueIds(TestSet testSet) {
         Set<String> seenIds = new HashSet<>();
-        for (TestSet testSet : ALL_TEST_SETS) {
-            for (TestCase testCase : testCasesOf(testSet)) {
-                if (!seenIds.add(testCase.id())) {
-                    warnings.add("ID duplicado: " + testCase.id());
-                }
+        for (TestCase testCase : testCasesOf(testSet)) {
+            if (!seenIds.add(testCase.id())) {
+                warnings.add("ID duplicado: " + testCase.id());
             }
         }
     }
@@ -341,7 +307,7 @@ public final class ReportGenerator {
             Table equivalenceClassTable,
             boolean graphImageCreated,
             Table decisionTable,
-            List<Table> testCaseTables) {
+            Table testCaseTable) {
         StringBuilder report = new StringBuilder();
         report.append("# Artefatos gerados para o relatório\n\n");
         report.append(equivalenceClassTable.toMarkdown()).append('\n');
@@ -353,10 +319,7 @@ public final class ReportGenerator {
             report.append("_Imagem não gerada: Graphviz não instalado._\n\n");
         }
         report.append(decisionTable.toMarkdown()).append('\n');
-
-        for (Table table : testCaseTables) {
-            report.append(table.toMarkdown()).append('\n');
-        }
+        report.append(testCaseTable.toMarkdown()).append('\n');
         return report.toString();
     }
 
@@ -381,28 +344,14 @@ public final class ReportGenerator {
         }
     }
 
-    private enum Coverage {
-        EQUIVALENCE_CLASSES("Classes Eq. Exercitadas"),
-        STRUCTURAL_REQUIREMENT("Requisito Estrutural Coberto"),
-        TARGET_MUTANT("Mutante Alvo");
-
-        final String columnTitle;
-
-        Coverage(String columnTitle) {
-            this.columnTitle = columnTitle;
-        }
-    }
-
     private static final class TestSet {
         final String name;
         final String fileSuffix;
-        final Coverage coverage;
         final Class<?>[] testClasses;
 
-        TestSet(String name, String fileSuffix, Coverage coverage, Class<?>... testClasses) {
+        TestSet(String name, String fileSuffix, Class<?>... testClasses) {
             this.name = name;
             this.fileSuffix = fileSuffix;
-            this.coverage = coverage;
             this.testClasses = testClasses;
         }
     }

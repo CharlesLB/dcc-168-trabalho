@@ -10,7 +10,7 @@
   <packaging>jar</packaging>
 
   <properties>
-    <!-- Java 8 por compatibilidade com o Baduíno -->
+    <!-- Código em Java 8 (sintaxe e API) -->
     <maven.compiler.source>1.8</maven.compiler.source>
     <maven.compiler.target>1.8</maven.compiler.target>
     <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
@@ -40,31 +40,6 @@
       </plugin>
 
       <!--
-        Cobertura por linha de comando (mesmo motor do EclEmma): mvn verify
-        Relatório em target/site/jacoco/index.html
-      -->
-      <plugin>
-        <groupId>org.jacoco</groupId>
-        <artifactId>jacoco-maven-plugin</artifactId>
-        <version>0.8.12</version>
-        <executions>
-          <execution>
-            <id>prepare-agent</id>
-            <goals>
-              <goal>prepare-agent</goal>
-            </goals>
-          </execution>
-          <execution>
-            <id>report</id>
-            <phase>verify</phase>
-            <goals>
-              <goal>report</goal>
-            </goals>
-          </execution>
-        </executions>
-      </plugin>
-
-      <!--
         mvn exec:java                     → joga no console
         mvn test-compile exec:java@report → gera tabelas e grafo em docs/reports/generated
       -->
@@ -85,44 +60,13 @@
           </execution>
         </executions>
       </plugin>
-
-      <!--
-        Teste de mutação: sempre informar -DtargetTests com os conjuntos da etapa (veja o README).
-        Sem ele, o PITest procura testes nos pacotes de targetClasses, que não têm testes.
-      -->
-      <plugin>
-        <groupId>org.pitest</groupId>
-        <artifactId>pitest-maven</artifactId>
-        <version>1.15.8</version>
-        <configuration>
-          <!-- Muta apenas o domínio; I/O de console só geraria mutantes irrelevantes -->
-          <targetClasses>
-            <param>br.ufjf.dcc168.tictactoe.domain.*</param>
-          </targetClasses>
-          <!-- Apenas infraestrutura de teste: não pertence a nenhum conjunto de teste -->
-          <excludedTestClasses>
-            <param>br.ufjf.dcc168.tictactoe.report.*</param>
-            <param>br.ufjf.dcc168.tictactoe.causeeffect.*</param>
-            <param>br.ufjf.dcc168.tictactoe.io.*</param>
-            <param>br.ufjf.dcc168.tictactoe.suites.*</param>
-          </excludedTestClasses>
-          <!-- Equivalente ao "Full Mutation" pedido no enunciado -->
-          <mutators>
-            <mutator>ALL</mutator>
-          </mutators>
-          <outputFormats>
-            <param>HTML</param>
-          </outputFormats>
-          <timestampedReports>false</timestampedReports>
-        </configuration>
-      </plugin>
     </plugins>
   </build>
 
   <profiles>
     <!--
-      Com JDK 9+, source/target 1.8 ainda deixa compilar API do Java 9+ (ex.: List.of), que quebra
-      no Baduíno. O release 8 também confere a API usada.
+      Com JDK 9+, source/target 1.8 ainda deixa compilar API do Java 9+ (ex.: List.of). O release 8
+      também confere a API usada.
     -->
     <profile>
       <id>java8-api</id>

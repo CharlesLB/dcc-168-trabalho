@@ -7,7 +7,7 @@ import org.junit.runner.RunWith;
 import org.junit.runners.Suite;
 import org.junit.runners.Suite.SuiteClasses;
 
-/** TestSet-Func isolado: usado para medir a cobertura da Parte II-A. */
+/** TestSet-Func isolado (CT01–CT21). */
 @RunWith(Suite.class)
 @SuiteClasses({GameFunctionalTest.class, ConsoleFunctionalTest.class})
 public class FunctionalSuite {}
