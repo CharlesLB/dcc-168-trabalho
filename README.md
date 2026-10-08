@@ -11,11 +11,11 @@ Projeto Maven que abre igual no Eclipse, IntelliJ e VS Code.
 
 ## Abrir na IDE
 
-| IDE      | Como abrir                                                    |
-|----------|---------------------------------------------------------------|
-| Eclipse  | File → Import → Maven → Existing Maven Projects               |
-| IntelliJ | File → Open → selecionar a pasta (ou o `pom.xml`)             |
-| VS Code  | Abrir a pasta (extensão *Extension Pack for Java* instalada)  |
+| IDE      | Como abrir                                                   |
+| -------- | ------------------------------------------------------------ |
+| Eclipse  | File → Import → Maven → Existing Maven Projects              |
+| IntelliJ | File → Open → selecionar a pasta (ou o `pom.xml`)            |
+| VS Code  | Abrir a pasta (extensão _Extension Pack for Java_ instalada) |
 
 ## Comandos
 
@@ -49,14 +49,14 @@ src/test/java/br/ufjf/dcc168/tictactoe/
 
 ## Artefatos do relatório (gerados automaticamente)
 
-| Artefato | Fonte | O que o grupo escreve |
-|---|---|---|
-| Tabela 1 – Classes de Equivalência | `specification/EquivalenceClass` (+ `InputCondition`) | uma constante por classe |
-| Grafo de Causa-Efeito (.dot e .png) | `specification/CauseEffectSpecification` | causas, efeitos e ligações |
-| Tabela de Decisão | derivada do grafo | nada: sai sozinha |
-| Tabela 2 – Casos de Teste | anotação `@TestCase` em cada teste | ID, entrada, saída esperada e classes |
+| Artefato                            | Fonte                                                 | O que o grupo escreve                 |
+| ----------------------------------- | ----------------------------------------------------- | ------------------------------------- |
+| Tabela 1 – Classes de Equivalência  | `specification/EquivalenceClass` (+ `InputCondition`) | uma constante por classe              |
+| Grafo de Causa-Efeito (.dot e .png) | `specification/CauseEffectSpecification`              | causas, efeitos e ligações            |
+| Tabela de Decisão                   | derivada do grafo                                     | nada: sai sozinha                     |
+| Tabela 2 – Casos de Teste           | anotação `@TestCase` em cada teste                    | ID, entrada, saída esperada e classes |
 
-Para gerar: botão direito em `ReportGenerator` → *Run as Java Application* (qualquer IDE)
+Para gerar: botão direito em `ReportGenerator` → _Run as Java Application_ (qualquer IDE)
 ou `mvn test-compile exec:java@report`. Tudo sai em `docs/reports/generated/`:
 
 - `relatorio.md`: todas as tabelas e a imagem do grafo, juntas;
@@ -100,12 +100,12 @@ public void ct13_moveOnOccupiedCell_rejectedCellOccupied() { ... }
 
 - **Código em inglês, comentários em português.**
 - **Legibilidade primeiro:** nomes descritivos, métodos curtos, nada de abreviação.
-- **Formatação não se discute:** o build formata tudo (google-java-format, estilo AOSP, 4 espaços).
+- **Formatação:** o build formata tudo (google-java-format, estilo AOSP, 4 espaços).
   Rodem `mvn fmt:format` antes de cada commit.
 - **Nome de teste:** `ct13_moveOnOccupiedCell_rejectedCellOccupied` → ID da Tabela 2 + cenário + resultado.
 - **Domínio sem I/O:** `Scanner` e `System.out` só existem em `io/` e `Main`.
 
-## Regras definidas pelo grupo (entram na Parte I)
+## Regras definidas
 
 - X sempre começa.
 - Linhas e colunas numeradas de 0 a 2.
