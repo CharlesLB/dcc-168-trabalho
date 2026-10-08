@@ -4,7 +4,7 @@ Projeto Maven que abre igual no Eclipse, IntelliJ e VS Code.
 
 ## Requisitos
 
-- JDK 17+ para rodar o Maven (o código é compilado para Java 8, por compatibilidade com o Baduíno)
+- JDK 17+ para rodar o Maven (o código é compilado para Java 8)
 - Maven 3.8+
 - Graphviz, para gerar a imagem do grafo de causa-efeito (`dot` no PATH):
   Windows `winget install graphviz` · macOS `brew install graphviz` · Linux `sudo apt install graphviz`
@@ -21,86 +21,30 @@ Projeto Maven que abre igual no Eclipse, IntelliJ e VS Code.
 
 ```bash
 mvn test                                   # compila, formata e roda os testes
-mvn verify                                 # + relatório de cobertura JaCoCo
 mvn test -Dtest=FunctionalSuite            # só o TestSet-Func
-mvn verify -Dtest=FunctionalSuite          # cobertura só do TestSet-Func (Parte II-A)
-mvn verify -Dtest=FunctionalAndStructuralSuite  # cobertura do Func + Estr (Parte II-B)
 mvn fmt:format                             # só formata o código
 mvn -q exec:java                           # joga no console (Ctrl+D / Ctrl+Z encerra)
 mvn test-compile exec:java@report          # gera tabelas e grafo do relatório
 ```
 
-### Cobertura (JaCoCo)
-
-`mvn verify` gera `target/site/jacoco/index.html`. O JaCoCo usa o mesmo motor do EclEmma e serve
-para acompanhar a cobertura pela linha de comando; os relatórios entregues continuam sendo os do
-EclEmma e do Baduíno, no Eclipse.
-
-### Teste de mutação (PITest)
-
-O PITest muta só o pacote `domain` e sempre precisa de `-DtargetTests` com os conjuntos de teste
-da etapa:
-
-```bash
-# Parte III-A: TestSet-Func + TestSet-Estr
-mvn test-compile org.pitest:pitest-maven:mutationCoverage -DtargetTests="br.ufjf.dcc168.tictactoe.functional.*,br.ufjf.dcc168.tictactoe.structural.*"
-
-# Parte III-B: + testes de mutação
-mvn test-compile org.pitest:pitest-maven:mutationCoverage -DtargetTests="br.ufjf.dcc168.tictactoe.functional.*,br.ufjf.dcc168.tictactoe.structural.*,br.ufjf.dcc168.tictactoe.mutation.*"
-```
-
-O relatório sai em `target/pit-reports/index.html`.
-
 ## Estrutura
 
 ```
 src/main/java/br/ufjf/dcc168/tictactoe/
-├── domain/    regras do jogo, sem nenhum I/O (alvo do PITest, EclEmma e Baduíno)
+├── domain/    regras do jogo, sem nenhum I/O
 ├── io/        InputReader / OutputPrinter e implementações de console
 ├── console/   laço de interação, parser de jogadas e desenho do tabuleiro
 │              (cada camada guarda suas exceções num subpacote exception/)
 └── Main.java  único ponto que conhece System.in / System.out
 
 src/test/java/br/ufjf/dcc168/tictactoe/
-├── functional/  TestSet-Func  (Parte I / II-A)    métodos ctNN_...
-├── structural/  TestSet-Estr  (Parte II-B)        métodos ceNN_...
-├── mutation/    novos casos   (Parte III-B)       métodos cmNN_...
-├── suites/      uma suite JUnit por etapa de medição
+├── functional/  TestSet-Func (CT01–CT21)          métodos ctNN_...
+├── suites/      FunctionalSuite (roda o TestSet-Func)
 ├── io/          testes da lib de I/O
 ├── specification/  O QUE O GRUPO ESCREVE: classes de equivalência e grafo de causa-efeito
 ├── causeeffect/    modelo do grafo, tabela de decisão e exportação para .dot
 ├── report/         @TestCase e ReportGenerator (gera tabelas, .dot e .png)
 └── support/        ScriptedInputReader, RecordingOutputPrinter (dublês) e Moves (jogadas)
-```
-
-### Qual suite rodar em cada etapa
-
-| Etapa       | Suite                          | Ferramenta              |
-|-------------|--------------------------------|-------------------------|
-| Parte II-A  | `FunctionalSuite`              | EclEmma + Baduíno       |
-| Parte II-B  | `FunctionalAndStructuralSuite` | EclEmma + Baduíno       |
-| Parte III-A | `FunctionalAndStructuralSuite` | PITest (`-DtargetTests`)|
-| Parte III-B | `AllTestsSuite`                | PITest (`-DtargetTests`)|
-
-## Documentos
-
-| Documento | Conteúdo |
-|---|---|
-| `docs/parte-1/especificacao-parte-1.md` | Parte I: decisões do grupo, classes de equivalência, valores limite, grafo de causa-efeito, tabela de decisão e os 21 casos de teste do TestSet-Func (o oráculo de teste) |
-| `docs/SPEC.md` | Especificação de implementação: contratos de cada classe, fases e critérios de aceite |
-| `docs/defeitos.md` | Registro dos defeitos encontrados pelos conjuntos de teste, com correção e reteste |
-| `docs/cobertura-estrutural.md` | Cobertura de fluxo de controle (JaCoCo) e de dados (BA-DUA) nas Partes II-A e II-B, e os pares def-uso infactíveis |
-| `docs/mutantes-equivalentes.md` | Escores do PITest nas Partes III-A e III-B, mutantes mortos pelos casos de mutação e justificativa dos equivalentes |
-| `docs/relatorio-final.md` | Rascunho do relatório final (Partes II e III) para passar ao Google Drive |
-| `docs/reports/linha-de-comando/` | Relatórios do JaCoCo, BA-DUA e PITest de cada etapa, como referência até sair a exportação do Eclipse |
-
-## Entrega
-
-Depois de importar o projeto no Eclipse e colocar em `docs/reports/` as exportações do EclEmma,
-do Baduíno e os screenshots do PIT Summary, e o relatório em `docs/relatorio-final.pdf`:
-
-```bash
-scripts/empacotar-entrega.sh parte-2   # gera entrega/DCC168-JogoDaVelha-parte-2.zip
 ```
 
 ## Artefatos do relatório (gerados automaticamente)

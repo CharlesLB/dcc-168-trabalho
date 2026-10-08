@@ -2,13 +2,10 @@
 target/
 bin/
 
-# Zip de entrega (scripts/empacotar-entrega.sh)
-entrega/
-
 # Artefatos gerados (rodar o ReportGenerator)
 docs/reports/generated/
 
-# Eclipse (gerado ao importar; incluir no zip de entrega, não no Git)
+# Eclipse (gerado ao importar)
 .project
 .classpath
 .settings/
