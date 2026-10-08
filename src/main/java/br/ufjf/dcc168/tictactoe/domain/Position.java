@@ -9,9 +9,6 @@ import br.ufjf.dcc168.tictactoe.domain.exception.InvalidMoveException.Reason;
  */
 public final class Position {
 
-    public static final int MIN_INDEX = 0;
-    public static final int MAX_INDEX = 2;
-
     private final int row;
     private final int column;
 
@@ -37,6 +34,6 @@ public final class Position {
     }
 
     private static boolean isOutOfBounds(int index) {
-        return index < MIN_INDEX || index > MAX_INDEX;
+        return index < 0 || index >= Board.SIZE;
     }
 }

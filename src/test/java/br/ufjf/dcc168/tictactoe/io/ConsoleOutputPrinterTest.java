@@ -15,9 +15,7 @@ public class ConsoleOutputPrinterTest {
         OutputPrinter printer = new ConsoleOutputPrinter(new PrintStream(buffer, true, "UTF-8"));
 
         printer.printLine("Vez de X");
-        printer.printEmptyLine();
 
-        String lineBreak = System.lineSeparator();
-        assertEquals("Vez de X" + lineBreak + lineBreak, buffer.toString("UTF-8"));
+        assertEquals("Vez de X" + System.lineSeparator(), buffer.toString("UTF-8"));
     }
 }

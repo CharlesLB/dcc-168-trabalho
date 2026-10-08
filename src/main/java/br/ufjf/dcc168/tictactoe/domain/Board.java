@@ -28,7 +28,7 @@ public class Board {
         return cells[position.getRow()][position.getColumn()];
     }
 
-    public boolean isEmptyAt(Position position) {
+    private boolean isEmptyAt(Position position) {
         return getSymbolAt(position) == null;
     }
 
