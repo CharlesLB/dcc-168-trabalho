@@ -13,6 +13,7 @@ import static br.ufjf.dcc168.tictactoe.specification.EquivalenceClass.V4;
 import static br.ufjf.dcc168.tictactoe.specification.EquivalenceClass.V5;
 import static br.ufjf.dcc168.tictactoe.specification.EquivalenceClass.V6;
 import static br.ufjf.dcc168.tictactoe.specification.EquivalenceClass.V7;
+import static br.ufjf.dcc168.tictactoe.support.GameAssertions.assertGameUntouched;
 
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertFalse;
@@ -37,6 +38,8 @@ import org.junit.Test;
 public class ConsoleFunctionalTest {
 
     private static final String INVALID_MOVE_PREFIX = "Jogada inválida";
+    private static final String TWO_NUMBERS_MESSAGE =
+            "Jogada inválida: informe exatamente dois números";
 
     private final Game game = new Game();
     private final RecordingOutputPrinter printer = new RecordingOutputPrinter();
@@ -94,7 +97,7 @@ public class ConsoleFunctionalTest {
         runConsoleWith("a 1");
 
         assertPrinted("Jogada inválida: 'a' não é um número");
-        assertGameUntouched();
+        assertGameUntouched(game);
     }
 
     @TestCase(
@@ -108,8 +111,8 @@ public class ConsoleFunctionalTest {
     public void ct18_singleValue_showsTwoNumbersMessage() {
         runConsoleWith("1");
 
-        assertPrinted("Jogada inválida: informe exatamente dois números");
-        assertGameUntouched();
+        assertPrinted(TWO_NUMBERS_MESSAGE);
+        assertGameUntouched(game);
     }
 
     @TestCase(
@@ -123,8 +126,8 @@ public class ConsoleFunctionalTest {
     public void ct19_threeValues_showsTwoNumbersMessage() {
         runConsoleWith("1 1 1");
 
-        assertPrinted("Jogada inválida: informe exatamente dois números");
-        assertGameUntouched();
+        assertPrinted(TWO_NUMBERS_MESSAGE);
+        assertGameUntouched(game);
     }
 
     @TestCase(
@@ -138,8 +141,8 @@ public class ConsoleFunctionalTest {
     public void ct20_emptyLine_showsTwoNumbersMessage() {
         runConsoleWith("");
 
-        assertPrinted("Jogada inválida: informe exatamente dois números");
-        assertGameUntouched();
+        assertPrinted(TWO_NUMBERS_MESSAGE);
+        assertGameUntouched(game);
     }
 
     @TestCase(
@@ -164,11 +167,5 @@ public class ConsoleFunctionalTest {
     private void assertPrinted(String expectedLine) {
         assertTrue(
                 "Linha não impressa: " + expectedLine, printer.getLines().contains(expectedLine));
-    }
-
-    private void assertGameUntouched() {
-        assertEquals(0, game.getBoard().countFilledCells());
-        assertEquals(Symbol.X, game.getCurrentPlayer());
-        assertEquals(GameStatus.IN_PROGRESS, game.getStatus());
     }
 }
