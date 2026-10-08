@@ -5,7 +5,6 @@ import br.ufjf.dcc168.tictactoe.domain.Game;
 import br.ufjf.dcc168.tictactoe.io.ConsoleInputReader;
 import br.ufjf.dcc168.tictactoe.io.ConsoleOutputPrinter;
 
-/** Ponto de entrada: único lugar que conhece o console real. */
 public class Main {
 
     public static void main(String[] args) {

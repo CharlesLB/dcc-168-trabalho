@@ -18,10 +18,10 @@ Os 2 mutantes que continuam vivos são equivalentes. Descontados eles, o escore 
 
 | Classe | Linha | Operador (PITest) | Mutação | Situação |
 |---|---|---|---|---|
-| `InvalidMoveException$Reason` | 24 | `EMPTY_RETURNS` | `getMessage` retorna `""` | Morto pelo CM01 |
-| `InvalidMoveException` | 31 | `NON_VOID_METHOD_CALLS` | `super(reason.getMessage())` vira `super(null)` | Morto pelo CM01 |
-| `Board` | 30 | `INLINE_CONSTS` | 1ª dimensão de `new Symbol[SIZE][SIZE]`: 3 vira 4 | Equivalente (M1) |
-| `Board` | 30 | `INLINE_CONSTS` | 2ª dimensão de `new Symbol[SIZE][SIZE]`: 3 vira 4 | Equivalente (M2) |
+| `InvalidMoveException$Reason` | 17 | `EMPTY_RETURNS` | `getMessage` retorna `""` | Morto pelo CM01 |
+| `InvalidMoveException` | 24 | `NON_VOID_METHOD_CALLS` | `super(reason.getMessage())` vira `super(null)` | Morto pelo CM01 |
+| `Board` | 23 | `INLINE_CONSTS` | 1ª dimensão de `new Symbol[SIZE][SIZE]`: 3 vira 4 | Equivalente (M1) |
+| `Board` | 23 | `INLINE_CONSTS` | 2ª dimensão de `new Symbol[SIZE][SIZE]`: 3 vira 4 | Equivalente (M2) |
 
 Os dois primeiros sobreviveram porque nenhum caso anterior confere o texto de uma
 `InvalidMoveException`. O TestSet-Func verifica só o `Reason`, e os casos de console da Parte I
@@ -31,7 +31,7 @@ valores de 0 a 2)`.
 
 ## Mutantes equivalentes
 
-### M1 – `Board`, linha 30: tabuleiro com 4 linhas
+### M1 – `Board`, linha 23: tabuleiro com 4 linhas
 
 ```java
 private final Symbol[][] cells = new Symbol[SIZE][SIZE];   // original: 3 x 3
@@ -52,7 +52,7 @@ A linha extra (`cells[3]`) nunca recebe símbolo e nunca é lida de forma que mu
 Para toda sequência de jogadas, o original e o mutante devolvem os mesmos valores e lançam as
 mesmas exceções. Nenhum teste distingue os dois.
 
-### M2 – `Board`, linha 30: linhas com 4 células
+### M2 – `Board`, linha 23: linhas com 4 células
 
 ```java
 private final Symbol[][] cells = new Symbol[SIZE][4];      // mutante: 3 x 4

@@ -7,12 +7,6 @@ import br.ufjf.dcc168.tictactoe.io.InputExhaustedException;
 import br.ufjf.dcc168.tictactoe.io.InputReader;
 import br.ufjf.dcc168.tictactoe.io.OutputPrinter;
 
-/**
- * Laço de interação com os jogadores.
- *
- * <p>Toda a comunicação passa por InputReader e OutputPrinter, então esta classe pode ser testada
- * com entradas roteirizadas, sem teclado nem tela.
- */
 public class ConsoleGame {
 
     private final Game game;
@@ -27,12 +21,6 @@ public class ConsoleGame {
         this.renderer = new BoardRenderer(printer);
     }
 
-    /**
-     * Executa a partida até haver vitória ou empate.
-     *
-     * <p>Se a entrada acabar antes (Ctrl+D/Ctrl+Z no console, ou fim do roteiro num teste), avisa
-     * que a partida foi interrompida e retorna normalmente.
-     */
     public void run() {
         printer.printLine("Jogo da Velha");
         try {

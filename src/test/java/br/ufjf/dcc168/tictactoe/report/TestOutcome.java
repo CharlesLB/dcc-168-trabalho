@@ -1,6 +1,5 @@
 package br.ufjf.dcc168.tictactoe.report;
 
-/** Resultado da execução de um método de teste. */
 public final class TestOutcome {
 
     public enum Status {

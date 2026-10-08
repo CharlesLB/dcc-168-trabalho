@@ -4,7 +4,6 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
-/** Tabela simples (cabeçalho + linhas) que sabe se escrever em Markdown. */
 public class Table {
 
     private final String title;

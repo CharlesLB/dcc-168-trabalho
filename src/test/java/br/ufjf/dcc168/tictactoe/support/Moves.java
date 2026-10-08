@@ -35,14 +35,12 @@ public final class Moves {
 
     private Moves() {}
 
-    /** Aplica as jogadas, em ordem, direto no domínio. */
     public static void playAll(Game game, int[][] moves) {
         for (int[] move : moves) {
             game.play(new Position(move[0], move[1]));
         }
     }
 
-    /** Converte as jogadas nas linhas que o jogador digitaria: {0, 2} vira "0 2". */
     public static String[] asTypedLines(int[][] moves) {
         String[] lines = new String[moves.length];
         for (int i = 0; i < moves.length; i++) {

@@ -89,7 +89,6 @@ public final class ReportGenerator {
         generate(DEFAULT_OUTPUT_DIRECTORY);
     }
 
-    /** Gera todos os artefatos do relatório na pasta informada. */
     public static void generate(Path outputDirectory) throws IOException {
         new ReportGenerator(outputDirectory).generateAll();
     }
@@ -382,7 +381,6 @@ public final class ReportGenerator {
         }
     }
 
-    /** O que a Tabela 2 mostra como cobertura de cada caso. */
     private enum Coverage {
         EQUIVALENCE_CLASSES("Classes Eq. Exercitadas"),
         STRUCTURAL_REQUIREMENT("Requisito Estrutural Coberto"),
@@ -395,7 +393,6 @@ public final class ReportGenerator {
         }
     }
 
-    /** Um conjunto de teste do trabalho e as classes JUnit que o implementam. */
     private static final class TestSet {
         final String name;
         final String fileSuffix;

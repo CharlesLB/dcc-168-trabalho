@@ -3,7 +3,6 @@ package br.ufjf.dcc168.tictactoe.io;
 import java.io.InputStream;
 import java.util.Scanner;
 
-/** Lê linhas de um InputStream, por padrão o teclado (System.in). */
 public class ConsoleInputReader implements InputReader {
 
     private final Scanner scanner;

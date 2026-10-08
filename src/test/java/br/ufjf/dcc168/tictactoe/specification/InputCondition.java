@@ -1,9 +1,7 @@
 package br.ufjf.dcc168.tictactoe.specification;
 
 /**
- * Condições de entrada da especificação (coluna "Condição de Entrada" da Tabela 1 da Parte I).
- *
- * <p>A ordem das constantes é a ordem das linhas da Tabela 1. As duas últimas são classes de saída:
+ * A ordem das constantes é a ordem das linhas da Tabela 1. As duas últimas são classes de saída:
  * particionam o domínio pelas saídas distintas que o programa deve produzir.
  */
 public enum InputCondition {

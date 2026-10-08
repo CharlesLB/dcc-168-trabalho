@@ -2,32 +2,23 @@
 
 import br.ufjf.dcc168.tictactoe.domain.Position;
 
-/**
- * Converte o texto digitado pelo jogador em uma Position.
- *
- * &lt;p&gt;Formato aceito: dois números inteiros separados por espaço, ex.: &quot;1 2&quot;. A validação dos
- * limites do tabuleiro fica a cargo de Position.
- */
 public final class MoveParser {
 
     private MoveParser() {}
 
-    /**
-     * @throws InvalidInputException se o texto não tiver exatamente dois inteiros
-     */
     public static Position parse(String input) {
-<span class="fc" id="L19">        String[] parts = input.trim().split(&quot;\\s+&quot;);</span>
-<span class="fc bfc" id="L20" title="All 2 branches covered.">        if (parts.length != 2) {</span>
-<span class="fc" id="L21">            throw new InvalidInputException(&quot;informe exatamente dois números&quot;);</span>
+<span class="fc" id="L10">        String[] parts = input.trim().split(&quot;\\s+&quot;);</span>
+<span class="fc bfc" id="L11" title="All 2 branches covered.">        if (parts.length != 2) {</span>
+<span class="fc" id="L12">            throw new InvalidInputException(&quot;informe exatamente dois números&quot;);</span>
         }
-<span class="fc" id="L23">        return new Position(toInt(parts[0]), toInt(parts[1]));</span>
+<span class="fc" id="L14">        return new Position(toInt(parts[0]), toInt(parts[1]));</span>
     }
 
     private static int toInt(String text) {
         try {
-<span class="fc" id="L28">            return Integer.parseInt(text);</span>
-<span class="fc" id="L29">        } catch (NumberFormatException error) {</span>
-<span class="fc" id="L30">            throw new InvalidInputException(&quot;'&quot; + text + &quot;' não é um número&quot;);</span>
+<span class="fc" id="L19">            return Integer.parseInt(text);</span>
+<span class="fc" id="L20">        } catch (NumberFormatException error) {</span>
+<span class="fc" id="L21">            throw new InvalidInputException(&quot;'&quot; + text + &quot;' não é um número&quot;);</span>
         }
     }
 }

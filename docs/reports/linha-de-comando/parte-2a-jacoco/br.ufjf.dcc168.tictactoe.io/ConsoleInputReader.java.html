@@ -3,25 +3,24 @@
 import java.io.InputStream;
 import java.util.Scanner;
 
-/** Lê linhas de um InputStream, por padrão o teclado (System.in). */
 public class ConsoleInputReader implements InputReader {
 
     private final Scanner scanner;
 
     public ConsoleInputReader() {
-<span class="nc" id="L12">        this(System.in);</span>
-<span class="nc" id="L13">    }</span>
+<span class="nc" id="L11">        this(System.in);</span>
+<span class="nc" id="L12">    }</span>
 
-<span class="nc" id="L15">    public ConsoleInputReader(InputStream source) {</span>
-<span class="nc" id="L16">        this.scanner = new Scanner(source, &quot;UTF-8&quot;);</span>
-<span class="nc" id="L17">    }</span>
+<span class="nc" id="L14">    public ConsoleInputReader(InputStream source) {</span>
+<span class="nc" id="L15">        this.scanner = new Scanner(source, &quot;UTF-8&quot;);</span>
+<span class="nc" id="L16">    }</span>
 
     @Override
     public String readLine() {
-<span class="nc bnc" id="L21" title="All 2 branches missed.">        if (!scanner.hasNextLine()) {</span>
-<span class="nc" id="L22">            throw new InputExhaustedException();</span>
+<span class="nc bnc" id="L20" title="All 2 branches missed.">        if (!scanner.hasNextLine()) {</span>
+<span class="nc" id="L21">            throw new InputExhaustedException();</span>
         }
-<span class="nc" id="L24">        return scanner.nextLine();</span>
+<span class="nc" id="L23">        return scanner.nextLine();</span>
     }
 }
 </pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.12.202403310830</span></div></body></html>
