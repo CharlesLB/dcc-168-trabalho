@@ -1,0 +1,57 @@
+digraph CauseEffect {
+    label="Grafo de Causa-Efeito – Jogada";
+    labelloc=t;
+    rankdir=LR;
+    nodesep=0.4;
+    ranksep=0.9;
+    fontname="Helvetica";
+    node [fontname="Helvetica", fontsize=11];
+    edge [arrowsize=0.7];
+
+    // Causas
+    { rank=same;
+        C1 [shape=box, style=rounded, label="C1\nLinha entre 0 e 2"];
+        C2 [shape=box, style=rounded, label="C2\nColuna entre 0 e 2"];
+        C3 [shape=box, style=rounded, label="C3\nPartida em andamento"];
+        C4 [shape=box, style=rounded, label="C4\nCélula escolhida vazia"];
+        C5 [shape=box, style=rounded, label="C5\nJogada completa linha,\ncoluna ou diagonal"];
+        C6 [shape=box, style=rounded, label="C6\nJogada preenche a\núltima célula vazia"];
+        C1 -> C2 -> C3 -> C4 -> C5 -> C6 [style=invis];
+    }
+
+    // Nós intermediários
+    N1 [shape=circle, width=0.6, fixedsize=true, label="N1\n∧"];
+    N2 [shape=circle, width=0.6, fixedsize=true, label="N2\n∧"];
+
+    // Efeitos
+    { rank=same;
+        E1 [shape=box, style="rounded,bold", label="E1\nRejeita: posição\nfora do tabuleiro"];
+        E2 [shape=box, style="rounded,bold", label="E2 ∧\nRejeita: partida\njá encerrada"];
+        E3 [shape=box, style="rounded,bold", label="E3 ∧\nRejeita: célula ocupada"];
+        E4 [shape=box, style="rounded,bold", label="E4 ∧\nJogador da vez vence"];
+        E5 [shape=box, style="rounded,bold", label="E5 ∧\nPartida termina\nempatada"];
+        E6 [shape=box, style="rounded,bold", label="E6 ∧\nVez passa ao\nadversário"];
+        E1 -> E2 -> E3 -> E4 -> E5 -> E6 [style=invis];
+    }
+
+    // Arestas
+    C1 -> N1;
+    C2 -> N1;
+    N1 -> N2;
+    C3 -> N2;
+    C4 -> N2;
+    N1 -> E1 [style=dashed, headlabel="~", labeldistance=2.2, labelangle=25, labelfontsize=16];
+    N1 -> E2;
+    C3 -> E2 [style=dashed, headlabel="~", labeldistance=2.2, labelangle=25, labelfontsize=16];
+    N1 -> E3;
+    C3 -> E3;
+    C4 -> E3 [style=dashed, headlabel="~", labeldistance=2.2, labelangle=25, labelfontsize=16];
+    N2 -> E4;
+    C5 -> E4;
+    N2 -> E5;
+    C5 -> E5 [style=dashed, headlabel="~", labeldistance=2.2, labelangle=25, labelfontsize=16];
+    C6 -> E5;
+    N2 -> E6;
+    C5 -> E6 [style=dashed, headlabel="~", labeldistance=2.2, labelangle=25, labelfontsize=16];
+    C6 -> E6 [style=dashed, headlabel="~", labeldistance=2.2, labelangle=25, labelfontsize=16];
+}
