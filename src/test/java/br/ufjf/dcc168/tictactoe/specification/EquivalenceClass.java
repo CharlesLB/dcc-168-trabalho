@@ -49,10 +49,6 @@ public enum EquivalenceClass {
         return condition;
     }
 
-    public String getDescription() {
-        return description;
-    }
-
     public boolean isValid() {
         return name().startsWith("V");
     }
