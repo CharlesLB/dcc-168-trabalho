@@ -96,7 +96,7 @@ esperada; se falhou, mostra `FALHOU – <mensagem>`; se está com `@Ignore`, mos
 public void ct13_moveOnOccupiedCell_rejectedCellOccupied() { ... }
 ```
 
-## Convenções do time
+## Convenções
 
 - **Código em inglês, comentários em português.**
 - **Legibilidade primeiro:** nomes descritivos, métodos curtos, nada de abreviação.
