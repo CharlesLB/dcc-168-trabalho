@@ -23,14 +23,6 @@ public class Table {
         rows.add(Arrays.asList(cells));
     }
 
-    public String getTitle() {
-        return title;
-    }
-
-    public int getRowCount() {
-        return rows.size();
-    }
-
     public String toMarkdown() {
         StringBuilder markdown = new StringBuilder();
         markdown.append("**").append(title).append("**\n\n");
