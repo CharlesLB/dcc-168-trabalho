@@ -1,4 +1,4 @@
-package br.ufjf.dcc168.tictactoe.domain;
+package br.ufjf.dcc168.tictactoe.domain.exception;
 
 public class InvalidMoveException extends RuntimeException {
 

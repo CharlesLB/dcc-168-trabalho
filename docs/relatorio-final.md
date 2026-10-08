@@ -67,7 +67,7 @@ O único trecho não executado é `Position.toString`, que nenhum caso da Parte 
 
 | Requisito | Critério | Caso | Resultado |
 |---|---|---|---|
-| Nós da linha 35 (`Position.toString`) | Fluxo de controle | CE01: `Position(1, 2).toString()` → `"(1, 2)"` | Coberto |
+| Nós da linha 36 (`Position.toString`) | Fluxo de controle | CE01: `Position(1, 2).toString()` → `"(1, 2)"` | Coberto |
 | 8 pares def-uso de variáveis de laço | Fluxo de dados | – | Infactíveis (abaixo) |
 
 **Pares def-uso infactíveis.** Os 8 pares que faltam têm a mesma forma: a variável de controle do
@@ -80,10 +80,10 @@ tamanhos fixos (3 linhas, 3 colunas, 8 linhas vencedoras), nenhuma entrada perco
 | `BoardRenderer.render` | 36 → 38 | `row` | `row = 0` → `row < Board.SIZE - 1` falso |
 | `BoardRenderer.formatRow` | 46 | `column` | `column = 0` → `column < Board.SIZE` falso |
 | `BoardRenderer.formatRow` | 46 → 48 | `column` | `column = 0` → `column < Board.SIZE - 1` falso |
-| `Board.countFilledCells` | 43 | índice do laço externo | `= 0` → saída do laço |
-| `Board.countFilledCells` | 44 | índice do laço interno | `= 0` → saída do laço |
-| `Board.hasCompleteLine` | 58 | índice do laço | `= 0` → saída do laço |
-| `Board.isLineFilledWith` | 67 | índice do laço | `= 0` → saída do laço |
+| `Board.countFilledCells` | 44 | índice do laço externo | `= 0` → saída do laço |
+| `Board.countFilledCells` | 45 | índice do laço interno | `= 0` → saída do laço |
+| `Board.hasCompleteLine` | 59 | índice do laço | `= 0` → saída do laço |
+| `Board.isLineFilledWith` | 68 | índice do laço | `= 0` → saída do laço |
 
 Detalhes e justificativa completa: `docs/cobertura-estrutural.md`.
 
@@ -159,8 +159,8 @@ Mutantes vivos:
 |---|---|---|---|
 | `InvalidMoveException$Reason` | 17 | `EMPTY_RETURNS` | `getMessage` retorna `""` |
 | `InvalidMoveException` | 24 | `NON_VOID_METHOD_CALLS` | `super(reason.getMessage())` vira `super(null)` |
-| `Board` | 23 | `INLINE_CONSTS` | 1ª dimensão de `new Symbol[SIZE][SIZE]`: 3 vira 4 |
-| `Board` | 23 | `INLINE_CONSTS` | 2ª dimensão de `new Symbol[SIZE][SIZE]`: 3 vira 4 |
+| `Board` | 24 | `INLINE_CONSTS` | 1ª dimensão de `new Symbol[SIZE][SIZE]`: 3 vira 4 |
+| `Board` | 24 | `INLINE_CONSTS` | 2ª dimensão de `new Symbol[SIZE][SIZE]`: 3 vira 4 |
 
 **Defeitos nesta subfase:** nenhum.
 
@@ -187,13 +187,13 @@ conferem as mensagens de entrada mal formatada. O caso novo:
 
 **Mutantes equivalentes explicados**
 
-1. **`Board`, linha 23, `INLINE_CONSTS`: `new Symbol[4][SIZE]`.** O tabuleiro ganha uma 4ª
+1. **`Board`, linha 24, `INLINE_CONSTS`: `new Symbol[4][SIZE]`.** O tabuleiro ganha uma 4ª
    linha que nunca é usada. `getSymbolAt` e `place` só recebem posições com linha em `[0, 2]`
    (garantido por `Position`). `countFilledCells` percorre a linha extra, mas ela só tem `null`
    e soma 0. `isFull` compara com a constante 9, e `hasCompleteLine` só consulta posições das 8
    linhas vencedoras. Nenhum método expõe o array. Para qualquer sequência de jogadas, as saídas
    e exceções são as mesmas do original.
-2. **`Board`, linha 23, `INLINE_CONSTS`: `new Symbol[SIZE][4]`.** O mesmo raciocínio para uma 4ª
+2. **`Board`, linha 24, `INLINE_CONSTS`: `new Symbol[SIZE][4]`.** O mesmo raciocínio para uma 4ª
    coluna: `getColumn()` também está em `[0, 2]`, e a coluna extra fica sempre `null`.
 3. [GRUPO: o enunciado pede três, mas o PITest gerou só dois equivalentes no `domain`. Veja
    `docs/mutantes-equivalentes.md`.]

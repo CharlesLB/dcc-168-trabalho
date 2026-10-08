@@ -1,6 +1,7 @@
 package br.ufjf.dcc168.tictactoe.domain;
 
-import br.ufjf.dcc168.tictactoe.domain.InvalidMoveException.Reason;
+import br.ufjf.dcc168.tictactoe.domain.exception.InvalidMoveException;
+import br.ufjf.dcc168.tictactoe.domain.exception.InvalidMoveException.Reason;
 
 public class Board {
 

@@ -2,6 +2,8 @@ package br.ufjf.dcc168.tictactoe.io;
 
 import static org.junit.Assert.assertEquals;
 
+import br.ufjf.dcc168.tictactoe.io.exception.InputExhaustedException;
+
 import org.junit.Test;
 
 import java.io.ByteArrayInputStream;

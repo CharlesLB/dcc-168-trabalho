@@ -1,4 +1,4 @@
-package br.ufjf.dcc168.tictactoe.console;
+package br.ufjf.dcc168.tictactoe.console.exception;
 
 public class InvalidInputException extends RuntimeException {
 

@@ -1,11 +1,12 @@
 <?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="en"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>ConsoleGame.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">tic-tac-toe</a> &gt; <a href="index.source.html" class="el_package">br.ufjf.dcc168.tictactoe.console</a> &gt; <span class="el_source">ConsoleGame.java</span></div><h1>ConsoleGame.java</h1><pre class="source lang-java linenums">package br.ufjf.dcc168.tictactoe.console;
 
+import br.ufjf.dcc168.tictactoe.console.exception.InvalidInputException;
 import br.ufjf.dcc168.tictactoe.domain.Game;
 import br.ufjf.dcc168.tictactoe.domain.GameStatus;
-import br.ufjf.dcc168.tictactoe.domain.InvalidMoveException;
-import br.ufjf.dcc168.tictactoe.io.InputExhaustedException;
+import br.ufjf.dcc168.tictactoe.domain.exception.InvalidMoveException;
 import br.ufjf.dcc168.tictactoe.io.InputReader;
 import br.ufjf.dcc168.tictactoe.io.OutputPrinter;
+import br.ufjf.dcc168.tictactoe.io.exception.InputExhaustedException;
 
 public class ConsoleGame {
 
@@ -14,54 +15,54 @@ public class ConsoleGame {
     private final OutputPrinter printer;
     private final BoardRenderer renderer;
 
-<span class="fc" id="L17">    public ConsoleGame(Game game, InputReader reader, OutputPrinter printer) {</span>
-<span class="fc" id="L18">        this.game = game;</span>
-<span class="fc" id="L19">        this.reader = reader;</span>
-<span class="fc" id="L20">        this.printer = printer;</span>
-<span class="fc" id="L21">        this.renderer = new BoardRenderer(printer);</span>
-<span class="fc" id="L22">    }</span>
+<span class="fc" id="L18">    public ConsoleGame(Game game, InputReader reader, OutputPrinter printer) {</span>
+<span class="fc" id="L19">        this.game = game;</span>
+<span class="fc" id="L20">        this.reader = reader;</span>
+<span class="fc" id="L21">        this.printer = printer;</span>
+<span class="fc" id="L22">        this.renderer = new BoardRenderer(printer);</span>
+<span class="fc" id="L23">    }</span>
 
     public void run() {
-<span class="fc" id="L25">        printer.printLine(&quot;Jogo da Velha&quot;);</span>
+<span class="fc" id="L26">        printer.printLine(&quot;Jogo da Velha&quot;);</span>
         try {
-<span class="fc" id="L27">            playUntilFinished();</span>
-<span class="fc" id="L28">            showResult();</span>
-<span class="fc" id="L29">        } catch (InputExhaustedException endOfInput) {</span>
-<span class="fc" id="L30">            printer.printLine(&quot;Entrada encerrada. Partida interrompida.&quot;);</span>
-<span class="fc" id="L31">        }</span>
-<span class="fc" id="L32">    }</span>
+<span class="fc" id="L28">            playUntilFinished();</span>
+<span class="fc" id="L29">            showResult();</span>
+<span class="fc" id="L30">        } catch (InputExhaustedException endOfInput) {</span>
+<span class="fc" id="L31">            printer.printLine(&quot;Entrada encerrada. Partida interrompida.&quot;);</span>
+<span class="fc" id="L32">        }</span>
+<span class="fc" id="L33">    }</span>
 
     private void playUntilFinished() {
-<span class="fc bfc" id="L35" title="All 2 branches covered.">        while (!game.getStatus().isFinished()) {</span>
-<span class="fc" id="L36">            renderer.render(game.getBoard());</span>
-<span class="fc" id="L37">            playOneTurn();</span>
+<span class="fc bfc" id="L36" title="All 2 branches covered.">        while (!game.getStatus().isFinished()) {</span>
+<span class="fc" id="L37">            renderer.render(game.getBoard());</span>
+<span class="fc" id="L38">            playOneTurn();</span>
         }
-<span class="fc" id="L39">    }</span>
+<span class="fc" id="L40">    }</span>
 
     private void showResult() {
-<span class="fc" id="L42">        renderer.render(game.getBoard());</span>
-<span class="fc" id="L43">        printer.printLine(describeResult(game.getStatus()));</span>
-<span class="fc" id="L44">    }</span>
+<span class="fc" id="L43">        renderer.render(game.getBoard());</span>
+<span class="fc" id="L44">        printer.printLine(describeResult(game.getStatus()));</span>
+<span class="fc" id="L45">    }</span>
 
     private void playOneTurn() {
-<span class="fc" id="L47">        printer.printLine(</span>
-<span class="fc" id="L48">                &quot;Vez de &quot; + game.getCurrentPlayer() + &quot;. Digite linha e coluna (ex.: 0 2):&quot;);</span>
-<span class="fc" id="L49">        String input = reader.readLine();</span>
+<span class="fc" id="L48">        printer.printLine(</span>
+<span class="fc" id="L49">                &quot;Vez de &quot; + game.getCurrentPlayer() + &quot;. Digite linha e coluna (ex.: 0 2):&quot;);</span>
+<span class="fc" id="L50">        String input = reader.readLine();</span>
         try {
-<span class="fc" id="L51">            game.play(MoveParser.parse(input));</span>
-<span class="fc" id="L52">        } catch (InvalidInputException | InvalidMoveException error) {</span>
-<span class="fc" id="L53">            printer.printLine(&quot;Jogada inválida: &quot; + error.getMessage());</span>
-<span class="fc" id="L54">        }</span>
-<span class="fc" id="L55">    }</span>
+<span class="fc" id="L52">            game.play(MoveParser.parse(input));</span>
+<span class="fc" id="L53">        } catch (InvalidInputException | InvalidMoveException error) {</span>
+<span class="fc" id="L54">            printer.printLine(&quot;Jogada inválida: &quot; + error.getMessage());</span>
+<span class="fc" id="L55">        }</span>
+<span class="fc" id="L56">    }</span>
 
     private String describeResult(GameStatus status) {
-<span class="fc bfc" id="L58" title="All 3 branches covered.">        switch (status) {</span>
+<span class="fc bfc" id="L59" title="All 3 branches covered.">        switch (status) {</span>
             case X_WINS:
-<span class="fc" id="L60">                return &quot;X venceu!&quot;;</span>
+<span class="fc" id="L61">                return &quot;X venceu!&quot;;</span>
             case O_WINS:
-<span class="fc" id="L62">                return &quot;O venceu!&quot;;</span>
+<span class="fc" id="L63">                return &quot;O venceu!&quot;;</span>
             default:
-<span class="fc" id="L64">                return &quot;Empate!&quot;;</span>
+<span class="fc" id="L65">                return &quot;Empate!&quot;;</span>
         }
     }
 }
