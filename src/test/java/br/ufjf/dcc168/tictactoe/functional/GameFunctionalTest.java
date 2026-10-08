@@ -15,6 +15,7 @@ import static br.ufjf.dcc168.tictactoe.specification.EquivalenceClass.V4;
 import static br.ufjf.dcc168.tictactoe.specification.EquivalenceClass.V5;
 import static br.ufjf.dcc168.tictactoe.specification.EquivalenceClass.V8;
 import static br.ufjf.dcc168.tictactoe.specification.EquivalenceClass.V9;
+import static br.ufjf.dcc168.tictactoe.support.GameAssertions.assertGameUntouched;
 
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNull;
@@ -34,6 +35,8 @@ import org.junit.Test;
 
 public class GameFunctionalTest {
 
+    private final Game game = new Game();
+
     @TestCase(
             id = "CT03",
             input = "<X(0,0), O(0,1), X(1,1), O(0,2), X(2,2)>",
@@ -41,7 +44,6 @@ public class GameFunctionalTest {
             classes = {V1, V2, V3, V4, V5, V8, V12})
     @Test
     public void ct03_xCompletesMainDiagonal_xWins() {
-        Game game = new Game();
         Moves.playAll(game, Moves.X_WINS_MAIN_DIAGONAL);
 
         assertEquals(GameStatus.X_WINS, game.getStatus());
@@ -54,7 +56,6 @@ public class GameFunctionalTest {
             classes = {V1, V2, V3, V4, V5, V9, V12})
     @Test
     public void ct04_xCompletesAntiDiagonal_xWins() {
-        Game game = new Game();
         Moves.playAll(game, Moves.X_WINS_ANTI_DIAGONAL);
 
         assertEquals(GameStatus.X_WINS, game.getStatus());
@@ -67,7 +68,6 @@ public class GameFunctionalTest {
             classes = {V1, V2, V3, V4, V5, V8, V12})
     @Test
     public void ct06_xCompletesLineOnNinthMove_xWinsNotDraw() {
-        Game game = new Game();
         Moves.playAll(game, Moves.X_WINS_ON_NINTH_MOVE);
 
         assertEquals(GameStatus.X_WINS, game.getStatus());
@@ -81,11 +81,10 @@ public class GameFunctionalTest {
             classes = {V1, V2, V3, V4, V5, V11})
     @Test
     public void ct07_firstMove_isXAndTurnPassesToO() {
-        Game game = new Game();
-        play(game, 1, 1);
+        play(1, 1);
 
         assertEquals(GameStatus.IN_PROGRESS, game.getStatus());
-        assertEquals(Symbol.X, symbolAt(game, 1, 1));
+        assertEquals(Symbol.X, symbolAt(1, 1));
         assertEquals(Symbol.O, game.getCurrentPlayer());
     }
 
@@ -96,16 +95,15 @@ public class GameFunctionalTest {
             classes = {V1, V2, V3, V4, V5, V11})
     @Test
     public void ct08_cornerMoves_allAcceptedAndTurnAlternates() {
-        Game game = new Game();
-        play(game, 0, 0);
-        play(game, 0, 2);
-        play(game, 2, 0);
-        play(game, 2, 2);
+        play(0, 0);
+        play(0, 2);
+        play(2, 0);
+        play(2, 2);
 
-        assertEquals(Symbol.X, symbolAt(game, 0, 0));
-        assertEquals(Symbol.O, symbolAt(game, 0, 2));
-        assertEquals(Symbol.X, symbolAt(game, 2, 0));
-        assertEquals(Symbol.O, symbolAt(game, 2, 2));
+        assertEquals(Symbol.X, symbolAt(0, 0));
+        assertEquals(Symbol.O, symbolAt(0, 2));
+        assertEquals(Symbol.X, symbolAt(2, 0));
+        assertEquals(Symbol.O, symbolAt(2, 2));
         assertEquals(4, game.getBoard().countFilledCells());
         assertEquals(Symbol.X, game.getCurrentPlayer());
         assertEquals(GameStatus.IN_PROGRESS, game.getStatus());
@@ -118,9 +116,7 @@ public class GameFunctionalTest {
             classes = {V1, I3, V3})
     @Test
     public void ct09_rowMinusOne_rejectedOutOfBounds() {
-        Game game = new Game();
-        InvalidMoveException error =
-                assertThrows(InvalidMoveException.class, () -> play(game, -1, 0));
+        InvalidMoveException error = assertThrows(InvalidMoveException.class, () -> play(-1, 0));
 
         assertEquals(Reason.POSITION_OUT_OF_BOUNDS, error.getReason());
         assertGameUntouched(game);
@@ -133,9 +129,7 @@ public class GameFunctionalTest {
             classes = {V1, I4, V3})
     @Test
     public void ct10_rowThree_rejectedOutOfBounds() {
-        Game game = new Game();
-        InvalidMoveException error =
-                assertThrows(InvalidMoveException.class, () -> play(game, 3, 0));
+        InvalidMoveException error = assertThrows(InvalidMoveException.class, () -> play(3, 0));
 
         assertEquals(Reason.POSITION_OUT_OF_BOUNDS, error.getReason());
         assertGameUntouched(game);
@@ -148,9 +142,7 @@ public class GameFunctionalTest {
             classes = {V1, V2, I5})
     @Test
     public void ct11_columnMinusOne_rejectedOutOfBounds() {
-        Game game = new Game();
-        InvalidMoveException error =
-                assertThrows(InvalidMoveException.class, () -> play(game, 0, -1));
+        InvalidMoveException error = assertThrows(InvalidMoveException.class, () -> play(0, -1));
 
         assertEquals(Reason.POSITION_OUT_OF_BOUNDS, error.getReason());
         assertGameUntouched(game);
@@ -163,9 +155,7 @@ public class GameFunctionalTest {
             classes = {V1, V2, I6})
     @Test
     public void ct12_columnThree_rejectedOutOfBounds() {
-        Game game = new Game();
-        InvalidMoveException error =
-                assertThrows(InvalidMoveException.class, () -> play(game, 0, 3));
+        InvalidMoveException error = assertThrows(InvalidMoveException.class, () -> play(0, 3));
 
         assertEquals(Reason.POSITION_OUT_OF_BOUNDS, error.getReason());
         assertGameUntouched(game);
@@ -178,14 +168,12 @@ public class GameFunctionalTest {
             classes = {V1, V2, V3, I7, V5})
     @Test
     public void ct13_moveOnOccupiedCell_rejectedCellOccupied() {
-        Game game = new Game();
-        play(game, 0, 0);
+        play(0, 0);
 
-        InvalidMoveException error =
-                assertThrows(InvalidMoveException.class, () -> play(game, 0, 0));
+        InvalidMoveException error = assertThrows(InvalidMoveException.class, () -> play(0, 0));
 
         assertEquals(Reason.CELL_OCCUPIED, error.getReason());
-        assertEquals(Symbol.X, symbolAt(game, 0, 0));
+        assertEquals(Symbol.X, symbolAt(0, 0));
         assertEquals(1, game.getBoard().countFilledCells());
         assertEquals(Symbol.O, game.getCurrentPlayer());
     }
@@ -197,15 +185,13 @@ public class GameFunctionalTest {
             classes = {V1, V2, V3, V4, I8})
     @Test
     public void ct14_moveAfterWin_rejectedGameFinished() {
-        Game game = new Game();
         Moves.playAll(game, Moves.X_WINS_ROW_0);
 
-        InvalidMoveException error =
-                assertThrows(InvalidMoveException.class, () -> play(game, 2, 2));
+        InvalidMoveException error = assertThrows(InvalidMoveException.class, () -> play(2, 2));
 
         assertEquals(Reason.GAME_ALREADY_FINISHED, error.getReason());
         assertEquals(GameStatus.X_WINS, game.getStatus());
-        assertNull(symbolAt(game, 2, 2));
+        assertNull(symbolAt(2, 2));
     }
 
     @TestCase(
@@ -216,11 +202,9 @@ public class GameFunctionalTest {
             classes = {V1, V2, V3, I7, I8})
     @Test
     public void ct15_occupiedCellAfterDraw_rejectedGameFinished() {
-        Game game = new Game();
         Moves.playAll(game, Moves.DRAW);
 
-        InvalidMoveException error =
-                assertThrows(InvalidMoveException.class, () -> play(game, 0, 0));
+        InvalidMoveException error = assertThrows(InvalidMoveException.class, () -> play(0, 0));
 
         assertEquals(Reason.GAME_ALREADY_FINISHED, error.getReason());
         assertEquals(GameStatus.DRAW, game.getStatus());
@@ -235,28 +219,20 @@ public class GameFunctionalTest {
             classes = {V1, I4, I6, I8})
     @Test
     public void ct16_outOfBoundsAfterWin_rejectedOutOfBounds() {
-        Game game = new Game();
         Moves.playAll(game, Moves.X_WINS_ROW_0);
 
-        InvalidMoveException error =
-                assertThrows(InvalidMoveException.class, () -> play(game, 3, 3));
+        InvalidMoveException error = assertThrows(InvalidMoveException.class, () -> play(3, 3));
 
         assertEquals(Reason.POSITION_OUT_OF_BOUNDS, error.getReason());
         assertEquals(GameStatus.X_WINS, game.getStatus());
     }
 
     // O new Position(...) fica aqui dentro: é ele que rejeita posições fora do tabuleiro.
-    private void play(Game game, int row, int column) {
+    private void play(int row, int column) {
         game.play(new Position(row, column));
     }
 
-    private Symbol symbolAt(Game game, int row, int column) {
+    private Symbol symbolAt(int row, int column) {
         return game.getBoard().getSymbolAt(new Position(row, column));
-    }
-
-    private void assertGameUntouched(Game game) {
-        assertEquals(0, game.getBoard().countFilledCells());
-        assertEquals(Symbol.X, game.getCurrentPlayer());
-        assertEquals(GameStatus.IN_PROGRESS, game.getStatus());
     }
 }
