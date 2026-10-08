@@ -152,10 +152,12 @@ A ordem das verificações (posição → partida em andamento → célula vazia
 ```
 src/main/java/br/ufjf/dcc168/tictactoe/
 ├── Main.java
-├── domain/   Symbol, GameStatus, InvalidMoveException, Position, Board, Game
-├── io/       InputReader, OutputPrinter, ConsoleInputReader, ConsoleOutputPrinter,
-│             InputExhaustedException
-└── console/  ConsoleGame, MoveParser, InvalidInputException, BoardRenderer
+├── domain/   Symbol, GameStatus, Position, Board, Game
+│   └── exception/  InvalidMoveException
+├── io/       InputReader, OutputPrinter, ConsoleInputReader, ConsoleOutputPrinter
+│   └── exception/  InputExhaustedException
+└── console/  ConsoleGame, MoveParser, BoardRenderer
+    └── exception/  InvalidInputException
 
 src/test/java/br/ufjf/dcc168/tictactoe/
 ├── functional/     GameFunctionalTest, ConsoleFunctionalTest   ← NOVO / REESCRITO

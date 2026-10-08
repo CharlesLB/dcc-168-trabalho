@@ -1,7 +1,7 @@
 package br.ufjf.dcc168.tictactoe.support;
 
-import br.ufjf.dcc168.tictactoe.io.InputExhaustedException;
 import br.ufjf.dcc168.tictactoe.io.InputReader;
+import br.ufjf.dcc168.tictactoe.io.exception.InputExhaustedException;
 
 import java.util.ArrayDeque;
 import java.util.Arrays;

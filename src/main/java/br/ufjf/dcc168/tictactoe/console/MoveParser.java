@@ -1,5 +1,6 @@
 package br.ufjf.dcc168.tictactoe.console;
 
+import br.ufjf.dcc168.tictactoe.console.exception.InvalidInputException;
 import br.ufjf.dcc168.tictactoe.domain.Position;
 
 public final class MoveParser {

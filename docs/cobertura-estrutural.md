@@ -26,7 +26,7 @@ fluxo de dados é de 100% já com o TestSet-Func.
 
 | Caso | Requisito | Por que o TestSet-Func não cobre |
 |---|---|---|
-| CE01 | `Position.toString` (linha 35) | Nenhum caso da Parte I imprime uma posição. O método não tem ramos nem pares def-uso, então só muda a cobertura de fluxo de controle |
+| CE01 | `Position.toString` (linha 36) | Nenhum caso da Parte I imprime uma posição. O método não tem ramos nem pares def-uso, então só muda a cobertura de fluxo de controle |
 
 ## Pares def-uso infactíveis
 
@@ -39,10 +39,10 @@ variável de controle nunca chega à saída do laço, nem a um teste falso, aind
 | `BoardRenderer.render` | 36 → 38 | `row` | `row = 0` → `row < Board.SIZE - 1` (falso) | Com `row = 0`, `0 < 2` é sempre verdadeiro |
 | `BoardRenderer.formatRow` | 46 | `column` | `column = 0` → `column < Board.SIZE` (falso, sai do laço) | Com `column = 0`, `0 < 3` é sempre verdadeiro |
 | `BoardRenderer.formatRow` | 46 → 48 | `column` | `column = 0` → `column < Board.SIZE - 1` (falso) | Com `column = 0`, `0 < 2` é sempre verdadeiro |
-| `Board.countFilledCells` | 43 | índice do `for` sobre `cells` | índice `= 0` → saída do laço | `cells` sempre tem 3 linhas |
-| `Board.countFilledCells` | 44 | índice do `for` sobre `row` | índice `= 0` → saída do laço | Cada linha sempre tem 3 células |
-| `Board.hasCompleteLine` | 58 | índice do `for` sobre `WINNING_LINES` | índice `= 0` → saída do laço | `WINNING_LINES` sempre tem 8 linhas |
-| `Board.isLineFilledWith` | 67 | índice do `for` sobre `line` | índice `= 0` → saída do laço | Toda linha vencedora tem 3 posições |
+| `Board.countFilledCells` | 44 | índice do `for` sobre `cells` | índice `= 0` → saída do laço | `cells` sempre tem 3 linhas |
+| `Board.countFilledCells` | 45 | índice do `for` sobre `row` | índice `= 0` → saída do laço | Cada linha sempre tem 3 células |
+| `Board.hasCompleteLine` | 59 | índice do `for` sobre `WINNING_LINES` | índice `= 0` → saída do laço | `WINNING_LINES` sempre tem 8 linhas |
+| `Board.isLineFilledWith` | 68 | índice do `for` sobre `line` | índice `= 0` → saída do laço | Toda linha vencedora tem 3 posições |
 
 Nos quatro laços `for (X x : array)` de `Board`, o índice é uma variável que o compilador cria e
 não aparece no código-fonte. O BA-DUA conta os pares dela, mas o relatório XML não os nomeia. A

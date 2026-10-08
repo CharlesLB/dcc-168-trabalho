@@ -58,6 +58,7 @@ src/main/java/br/ufjf/dcc168/tictactoe/
 ├── domain/    regras do jogo, sem nenhum I/O (alvo do PITest, EclEmma e Baduíno)
 ├── io/        InputReader / OutputPrinter e implementações de console
 ├── console/   laço de interação, parser de jogadas e desenho do tabuleiro
+│              (cada camada guarda suas exceções num subpacote exception/)
 └── Main.java  único ponto que conhece System.in / System.out
 
 src/test/java/br/ufjf/dcc168/tictactoe/

@@ -1,5 +1,7 @@
 package br.ufjf.dcc168.tictactoe.io;
 
+import br.ufjf.dcc168.tictactoe.io.exception.InputExhaustedException;
+
 public interface InputReader {
 
     /**

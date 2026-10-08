@@ -1,11 +1,12 @@
 package br.ufjf.dcc168.tictactoe.console;
 
+import br.ufjf.dcc168.tictactoe.console.exception.InvalidInputException;
 import br.ufjf.dcc168.tictactoe.domain.Game;
 import br.ufjf.dcc168.tictactoe.domain.GameStatus;
-import br.ufjf.dcc168.tictactoe.domain.InvalidMoveException;
-import br.ufjf.dcc168.tictactoe.io.InputExhaustedException;
+import br.ufjf.dcc168.tictactoe.domain.exception.InvalidMoveException;
 import br.ufjf.dcc168.tictactoe.io.InputReader;
 import br.ufjf.dcc168.tictactoe.io.OutputPrinter;
+import br.ufjf.dcc168.tictactoe.io.exception.InputExhaustedException;
 
 public class ConsoleGame {
 

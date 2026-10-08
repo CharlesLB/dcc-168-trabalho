@@ -23,10 +23,10 @@ import static org.junit.Assert.assertTrue;
 
 import br.ufjf.dcc168.tictactoe.domain.Game;
 import br.ufjf.dcc168.tictactoe.domain.GameStatus;
-import br.ufjf.dcc168.tictactoe.domain.InvalidMoveException;
-import br.ufjf.dcc168.tictactoe.domain.InvalidMoveException.Reason;
 import br.ufjf.dcc168.tictactoe.domain.Position;
 import br.ufjf.dcc168.tictactoe.domain.Symbol;
+import br.ufjf.dcc168.tictactoe.domain.exception.InvalidMoveException;
+import br.ufjf.dcc168.tictactoe.domain.exception.InvalidMoveException.Reason;
 import br.ufjf.dcc168.tictactoe.report.TestCase;
 import br.ufjf.dcc168.tictactoe.support.Moves;
 

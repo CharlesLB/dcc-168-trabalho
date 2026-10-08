@@ -14,13 +14,13 @@ import org.junit.Test;
  */
 public class GameStructuralTest {
 
-    // Requisito: nós (instruções) da linha 35 de Position.toString, o único método que o
+    // Requisito: nós (instruções) da linha 36 de Position.toString, o único método que o
     // TestSet-Func não executa. O método não tem ramos nem pares def-uso.
     @TestCase(
             id = "CE01",
             input = "Position(1, 2).toString()",
             expected = "\"(1, 2)\"",
-            requirement = "Position.toString (linha 35): nós não executados pelo TestSet-Func")
+            requirement = "Position.toString (linha 36): nós não executados pelo TestSet-Func")
     @Test
     public void ce01_positionToString_formatsRowAndColumn() {
         assertEquals("(1, 2)", new Position(1, 2).toString());

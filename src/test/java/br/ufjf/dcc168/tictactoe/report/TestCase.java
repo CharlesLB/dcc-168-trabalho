@@ -24,7 +24,7 @@ public @interface TestCase {
     EquivalenceClass[] classes() default {};
 
     /**
-     * Requisito coberto: estrutural no TestSet-Estr (ex.: "Position.toString, linha 35") ou o
+     * Requisito coberto: estrutural no TestSet-Estr (ex.: "Position.toString, linha 36") ou o
      * mutante alvo nos casos de mutação. Aparece na Tabela 2 no lugar das classes de equivalência.
      */
     String requirement() default "";
