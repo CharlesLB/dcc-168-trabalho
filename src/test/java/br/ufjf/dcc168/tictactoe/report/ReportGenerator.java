@@ -52,12 +52,12 @@ public final class ReportGenerator {
 
     private static final String GRAPH_FILE_NAME = "grafo-causa-efeito";
 
-    private static final TestSet FUNCTIONAL =
-            new TestSet(
-                    "TestSet-Func",
-                    "testset-func",
-                    GameFunctionalTest.class,
-                    ConsoleFunctionalTest.class);
+    private static final String TEST_SET_NAME = "TestSet-Func";
+
+    private static final Class<?>[] TEST_CLASSES = {
+        GameFunctionalTest.class, ConsoleFunctionalTest.class
+    };
+
     private final Path outputDirectory;
     private final List<String> generatedFiles = new ArrayList<>();
     private final List<String> warnings = new ArrayList<>();
@@ -85,16 +85,17 @@ public final class ReportGenerator {
         Table decisionTable = buildDecisionTable(DecisionTable.from(graph));
         write("tabela-decisao-causa-efeito.md", decisionTable.toMarkdown());
 
-        Table testCaseTable = buildTestCaseTable(FUNCTIONAL);
-        write("tabela-2-" + FUNCTIONAL.fileSuffix + ".md", testCaseTable.toMarkdown());
+        List<Method> testCaseMethods = annotatedTestMethodsSortedById();
+        Table testCaseTable = buildTestCaseTable(testCaseMethods);
+        write("tabela-2-testset-func.md", testCaseTable.toMarkdown());
 
         write(
                 "relatorio.md",
                 buildFullReport(
                         equivalenceClassTable, graphImageCreated, decisionTable, testCaseTable));
 
-        checkUniqueIds(FUNCTIONAL);
-        checkEveryClassIsExercisedBy(FUNCTIONAL);
+        checkUniqueIds(testCaseMethods);
+        checkEveryClassIsExercisedBy(testCaseMethods);
         printSummary();
     }
 
@@ -172,8 +173,7 @@ public final class ReportGenerator {
 
         List<Node> causes = decisionTable.getCauses();
         for (int causeIndex = 0; causeIndex < causes.size(); causeIndex++) {
-            String[] row = new String[rules.size() + 1];
-            row[0] = describe(causes.get(causeIndex));
+            String[] row = newRow(causes.get(causeIndex), rules.size());
             for (int i = 0; i < rules.size(); i++) {
                 row[i + 1] = rules.get(i).valueOfCause(causeIndex).getSymbol();
             }
@@ -181,8 +181,7 @@ public final class ReportGenerator {
         }
 
         for (Node effect : decisionTable.getEffects()) {
-            String[] row = new String[rules.size() + 1];
-            row[0] = describe(effect);
+            String[] row = newRow(effect, rules.size());
             for (int i = 0; i < rules.size(); i++) {
                 row[i + 1] = rules.get(i).triggers(effect) ? "X" : "";
             }
@@ -191,25 +190,32 @@ public final class ReportGenerator {
         return table;
     }
 
+    // Primeira célula com a causa ou o efeito; as demais, uma por regra, ficam para o chamador.
+    private static String[] newRow(Node node, int ruleCount) {
+        String[] row = new String[ruleCount + 1];
+        row[0] = describe(node);
+        return row;
+    }
+
     private static String describe(Node node) {
         return node.getId() + " – " + node.getDescription().replace("\n", " ");
     }
 
     // ---------------------------------------------------------------- Tabela 2
 
-    private Table buildTestCaseTable(TestSet testSet) {
-        OutcomeCollector outcomes = runTests(testSet);
+    private Table buildTestCaseTable(List<Method> testCaseMethods) {
+        OutcomeCollector outcomes = runTests();
 
         Table table =
                 new Table(
-                        "Tabela 2 – Casos de Teste (" + testSet.name + ")",
+                        "Tabela 2 – Casos de Teste (" + TEST_SET_NAME + ")",
                         "ID",
                         "Condições de Entrada",
                         "Saída Esp.",
                         "Classes Eq. Exercitadas",
                         "Saída Obtida");
 
-        for (Method method : annotatedTestMethodsSortedById(testSet)) {
+        for (Method method : testCaseMethods) {
             TestCase testCase = method.getAnnotation(TestCase.class);
             TestOutcome outcome = outcomes.outcomeOf(method.getDeclaringClass(), method.getName());
             table.addRow(
@@ -222,23 +228,23 @@ public final class ReportGenerator {
         return table;
     }
 
-    private OutcomeCollector runTests(TestSet testSet) {
+    private OutcomeCollector runTests() {
         OutcomeCollector collector = new OutcomeCollector();
         JUnitCore junit = new JUnitCore();
         junit.addListener(collector);
-        junit.run(testSet.testClasses);
+        junit.run(TEST_CLASSES);
         return collector;
     }
 
-    private List<Method> annotatedTestMethodsSortedById(TestSet testSet) {
+    private List<Method> annotatedTestMethodsSortedById() {
         List<Method> annotated = new ArrayList<>();
-        for (Class<?> testClass : testSet.testClasses) {
+        for (Class<?> testClass : TEST_CLASSES) {
             for (Method method : testClass.getMethods()) {
                 if (method.isAnnotationPresent(TestCase.class)) {
                     annotated.add(method);
                 } else if (method.isAnnotationPresent(Test.class)) {
                     warnings.add(
-                            testSet.name
+                            TEST_SET_NAME
                                     + ": "
                                     + method.getName()
                                     + " não tem @TestCase e ficou fora da tabela");
@@ -273,9 +279,9 @@ public final class ReportGenerator {
 
     // ---------------------------------------------------------------- Verificações
 
-    private void checkUniqueIds(TestSet testSet) {
+    private void checkUniqueIds(List<Method> testCaseMethods) {
         Set<String> seenIds = new HashSet<>();
-        for (TestCase testCase : testCasesOf(testSet)) {
+        for (TestCase testCase : testCasesOf(testCaseMethods)) {
             if (!seenIds.add(testCase.id())) {
                 warnings.add("ID duplicado: " + testCase.id());
             }
@@ -283,21 +289,19 @@ public final class ReportGenerator {
     }
 
     // A Parte I exige que o conjunto funcional exercite todas as classes de equivalência.
-    private void checkEveryClassIsExercisedBy(TestSet testSet) {
+    private void checkEveryClassIsExercisedBy(List<Method> testCaseMethods) {
         Set<EquivalenceClass> notExercised = EnumSet.allOf(EquivalenceClass.class);
-        for (TestCase testCase : testCasesOf(testSet)) {
+        for (TestCase testCase : testCasesOf(testCaseMethods)) {
             notExercised.removeAll(Arrays.asList(testCase.classes()));
         }
         for (EquivalenceClass eqClass : notExercised) {
-            warnings.add(testSet.name + " não exercita a classe " + eqClass.toTableText());
+            warnings.add(TEST_SET_NAME + " não exercita a classe " + eqClass.toTableText());
         }
     }
 
-    private static List<TestCase> testCasesOf(TestSet testSet) {
-        return Arrays.stream(testSet.testClasses)
-                .flatMap(testClass -> Arrays.stream(testClass.getMethods()))
+    private static List<TestCase> testCasesOf(List<Method> testCaseMethods) {
+        return testCaseMethods.stream()
                 .map(method -> method.getAnnotation(TestCase.class))
-                .filter(testCase -> testCase != null)
                 .collect(Collectors.toList());
     }
 
@@ -341,18 +345,6 @@ public final class ReportGenerator {
             for (String warning : warnings) {
                 System.out.println("  - " + warning);
             }
-        }
-    }
-
-    private static final class TestSet {
-        final String name;
-        final String fileSuffix;
-        final Class<?>[] testClasses;
-
-        TestSet(String name, String fileSuffix, Class<?>... testClasses) {
-            this.name = name;
-            this.fileSuffix = fileSuffix;
-            this.testClasses = testClasses;
         }
     }
 }
