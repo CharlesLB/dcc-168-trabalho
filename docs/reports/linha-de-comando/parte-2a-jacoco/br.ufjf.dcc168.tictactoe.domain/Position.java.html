@@ -3,11 +3,8 @@
 import br.ufjf.dcc168.tictactoe.domain.InvalidMoveException.Reason;
 
 /**
- * Coordenada válida de uma célula do tabuleiro (objeto de valor imutável).
- *
- * &lt;p&gt;Convenção: linhas e colunas numeradas de 0 a 2 (D2). Como a validação acontece na construção,
- * uma posição fora do tabuleiro é rejeitada antes de chegar ao Game, mesmo com a partida encerrada
- * (D8).
+ * Como a validação acontece na construção, uma posição fora do tabuleiro é rejeitada antes de
+ * chegar ao Game, mesmo com a partida encerrada (D8).
  */
 public final class Position {
 
@@ -17,33 +14,29 @@ public final class Position {
     private final int row;
     private final int column;
 
-    /**
-     * @throws InvalidMoveException com motivo POSITION_OUT_OF_BOUNDS se a linha ou a coluna estiver
-     *     fora do intervalo [0, 2]
-     */
-<span class="fc" id="L24">    public Position(int row, int column) {</span>
-<span class="fc bfc" id="L25" title="All 4 branches covered.">        if (isOutOfBounds(row) || isOutOfBounds(column)) {</span>
-<span class="fc" id="L26">            throw new InvalidMoveException(Reason.POSITION_OUT_OF_BOUNDS);</span>
+<span class="fc" id="L17">    public Position(int row, int column) {</span>
+<span class="fc bfc" id="L18" title="All 4 branches covered.">        if (isOutOfBounds(row) || isOutOfBounds(column)) {</span>
+<span class="fc" id="L19">            throw new InvalidMoveException(Reason.POSITION_OUT_OF_BOUNDS);</span>
         }
-<span class="fc" id="L28">        this.row = row;</span>
-<span class="fc" id="L29">        this.column = column;</span>
-<span class="fc" id="L30">    }</span>
+<span class="fc" id="L21">        this.row = row;</span>
+<span class="fc" id="L22">        this.column = column;</span>
+<span class="fc" id="L23">    }</span>
 
     public int getRow() {
-<span class="fc" id="L33">        return row;</span>
+<span class="fc" id="L26">        return row;</span>
     }
 
     public int getColumn() {
-<span class="fc" id="L37">        return column;</span>
+<span class="fc" id="L30">        return column;</span>
     }
 
     @Override
     public String toString() {
-<span class="nc" id="L42">        return &quot;(&quot; + row + &quot;, &quot; + column + &quot;)&quot;;</span>
+<span class="nc" id="L35">        return &quot;(&quot; + row + &quot;, &quot; + column + &quot;)&quot;;</span>
     }
 
     private static boolean isOutOfBounds(int index) {
-<span class="fc bfc" id="L46" title="All 4 branches covered.">        return index &lt; MIN_INDEX || index &gt; MAX_INDEX;</span>
+<span class="fc bfc" id="L39" title="All 4 branches covered.">        return index &lt; MIN_INDEX || index &gt; MAX_INDEX;</span>
     }
 }
 </pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.12.202403310830</span></div></body></html>

@@ -8,14 +8,6 @@ import static br.ufjf.dcc168.tictactoe.specification.InputCondition.ROW;
 import static br.ufjf.dcc168.tictactoe.specification.InputCondition.TARGET_CELL;
 import static br.ufjf.dcc168.tictactoe.specification.InputCondition.WINNING_PLAYER;
 
-/**
- * Catálogo das classes de equivalência: fonte única da Tabela 1 da Parte I (seção 3.2).
- *
- * <p>Convenção: o nome começa com V (válida) ou I (inválida), igual à notação da Tabela 1. Como os
- * testes referenciam estas constantes em {@link
- * br.ufjf.dcc168.tictactoe.report.TestCase#classes()}, um erro de digitação vira erro de compilação
- * em vez de um erro no relatório.
- */
 public enum EquivalenceClass {
     V1(INPUT_FORMAT, "dois inteiros separados por espaço"),
     I1(INPUT_FORMAT, "quantidade de valores ≠ 2"),
@@ -65,7 +57,6 @@ public enum EquivalenceClass {
         return name().startsWith("V");
     }
 
-    /** Texto usado na Tabela 1, ex.: "L < 0 (I3)". */
     public String toTableText() {
         return description + " (" + name() + ")";
     }

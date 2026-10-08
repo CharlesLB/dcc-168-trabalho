@@ -2,22 +2,21 @@
 
 import java.io.PrintStream;
 
-/** Escreve em um PrintStream, por padrão a tela (System.out). */
 public class ConsoleOutputPrinter implements OutputPrinter {
 
     private final PrintStream target;
 
     public ConsoleOutputPrinter() {
-<span class="nc" id="L11">        this(System.out);</span>
-<span class="nc" id="L12">    }</span>
+<span class="nc" id="L10">        this(System.out);</span>
+<span class="nc" id="L11">    }</span>
 
-<span class="nc" id="L14">    public ConsoleOutputPrinter(PrintStream target) {</span>
-<span class="nc" id="L15">        this.target = target;</span>
-<span class="nc" id="L16">    }</span>
+<span class="nc" id="L13">    public ConsoleOutputPrinter(PrintStream target) {</span>
+<span class="nc" id="L14">        this.target = target;</span>
+<span class="nc" id="L15">    }</span>
 
     @Override
     public void printLine(String text) {
-<span class="nc" id="L20">        target.println(text);</span>
-<span class="nc" id="L21">    }</span>
+<span class="nc" id="L19">        target.println(text);</span>
+<span class="nc" id="L20">    }</span>
 }
 </pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.12.202403310830</span></div></body></html>

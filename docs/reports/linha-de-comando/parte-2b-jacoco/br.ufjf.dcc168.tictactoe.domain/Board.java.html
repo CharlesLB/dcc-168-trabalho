@@ -2,18 +2,11 @@
 
 import br.ufjf.dcc168.tictactoe.domain.InvalidMoveException.Reason;
 
-/**
- * Tabuleiro 3x3.
- *
- * &lt;p&gt;Responsável apenas por guardar os símbolos e detectar linhas completas. Não conhece turnos nem
- * regras de alternância; isso é papel do Game.
- */
-<span class="fc" id="L11">public class Board {</span>
+<span class="fc" id="L5">public class Board {</span>
 
     public static final int SIZE = 3;
 
-    /** As 8 linhas vencedoras: 3 linhas, 3 colunas e 2 diagonais. */
-<span class="fc" id="L16">    private static final Position[][] WINNING_LINES = {</span>
+<span class="fc" id="L9">    private static final Position[][] WINNING_LINES = {</span>
         // Linhas
         {new Position(0, 0), new Position(0, 1), new Position(0, 2)},
         {new Position(1, 0), new Position(1, 1), new Position(1, 2)},
@@ -27,65 +20,56 @@ import br.ufjf.dcc168.tictactoe.domain.InvalidMoveException.Reason;
         {new Position(0, 2), new Position(1, 1), new Position(2, 0)}
     };
 
-<span class="fc" id="L30">    private final Symbol[][] cells = new Symbol[SIZE][SIZE];</span>
+<span class="fc" id="L23">    private final Symbol[][] cells = new Symbol[SIZE][SIZE];</span>
 
-    /** Retorna o símbolo da célula, ou null se estiver vazia. */
+    /** Retorna null se a célula estiver vazia. */
     public Symbol getSymbolAt(Position position) {
-<span class="fc" id="L34">        return cells[position.getRow()][position.getColumn()];</span>
+<span class="fc" id="L27">        return cells[position.getRow()][position.getColumn()];</span>
     }
 
     public boolean isEmptyAt(Position position) {
-<span class="fc bfc" id="L38" title="All 2 branches covered.">        return getSymbolAt(position) == null;</span>
+<span class="fc bfc" id="L31" title="All 2 branches covered.">        return getSymbolAt(position) == null;</span>
     }
 
-    /**
-     * Coloca o símbolo na célula.
-     *
-     * @throws InvalidMoveException com motivo CELL_OCCUPIED se a célula já estiver preenchida;
-     *     nesse caso o tabuleiro não muda
-     */
     public void place(Symbol symbol, Position position) {
-<span class="fc bfc" id="L48" title="All 2 branches covered.">        if (!isEmptyAt(position)) {</span>
-<span class="fc" id="L49">            throw new InvalidMoveException(Reason.CELL_OCCUPIED);</span>
+<span class="fc bfc" id="L35" title="All 2 branches covered.">        if (!isEmptyAt(position)) {</span>
+<span class="fc" id="L36">            throw new InvalidMoveException(Reason.CELL_OCCUPIED);</span>
         }
-<span class="fc" id="L51">        cells[position.getRow()][position.getColumn()] = symbol;</span>
-<span class="fc" id="L52">    }</span>
+<span class="fc" id="L38">        cells[position.getRow()][position.getColumn()] = symbol;</span>
+<span class="fc" id="L39">    }</span>
 
-    /** Quantidade de células preenchidas (0 a 9). */
     public int countFilledCells() {
-<span class="fc" id="L56">        int filledCells = 0;</span>
-<span class="fc bfc" id="L57" title="All 2 branches covered.">        for (Symbol[] row : cells) {</span>
-<span class="fc bfc" id="L58" title="All 2 branches covered.">            for (Symbol cell : row) {</span>
-<span class="fc bfc" id="L59" title="All 2 branches covered.">                if (cell != null) {</span>
-<span class="fc" id="L60">                    filledCells++;</span>
+<span class="fc" id="L42">        int filledCells = 0;</span>
+<span class="fc bfc" id="L43" title="All 2 branches covered.">        for (Symbol[] row : cells) {</span>
+<span class="fc bfc" id="L44" title="All 2 branches covered.">            for (Symbol cell : row) {</span>
+<span class="fc bfc" id="L45" title="All 2 branches covered.">                if (cell != null) {</span>
+<span class="fc" id="L46">                    filledCells++;</span>
                 }
             }
         }
-<span class="fc" id="L64">        return filledCells;</span>
+<span class="fc" id="L50">        return filledCells;</span>
     }
 
-    /** Indica se todas as nove células estão preenchidas. */
     public boolean isFull() {
-<span class="fc bfc" id="L69" title="All 2 branches covered.">        return countFilledCells() == SIZE * SIZE;</span>
+<span class="fc bfc" id="L54" title="All 2 branches covered.">        return countFilledCells() == SIZE * SIZE;</span>
     }
 
-    /** Indica se o símbolo completou alguma linha, coluna ou diagonal. */
     public boolean hasCompleteLine(Symbol symbol) {
-<span class="fc bfc" id="L74" title="All 2 branches covered.">        for (Position[] line : WINNING_LINES) {</span>
-<span class="fc bfc" id="L75" title="All 2 branches covered.">            if (isLineFilledWith(line, symbol)) {</span>
-<span class="fc" id="L76">                return true;</span>
+<span class="fc bfc" id="L58" title="All 2 branches covered.">        for (Position[] line : WINNING_LINES) {</span>
+<span class="fc bfc" id="L59" title="All 2 branches covered.">            if (isLineFilledWith(line, symbol)) {</span>
+<span class="fc" id="L60">                return true;</span>
             }
         }
-<span class="fc" id="L79">        return false;</span>
+<span class="fc" id="L63">        return false;</span>
     }
 
     private boolean isLineFilledWith(Position[] line, Symbol symbol) {
-<span class="fc bfc" id="L83" title="All 2 branches covered.">        for (Position position : line) {</span>
-<span class="fc bfc" id="L84" title="All 2 branches covered.">            if (getSymbolAt(position) != symbol) {</span>
-<span class="fc" id="L85">                return false;</span>
+<span class="fc bfc" id="L67" title="All 2 branches covered.">        for (Position position : line) {</span>
+<span class="fc bfc" id="L68" title="All 2 branches covered.">            if (getSymbolAt(position) != symbol) {</span>
+<span class="fc" id="L69">                return false;</span>
             }
         }
-<span class="fc" id="L88">        return true;</span>
+<span class="fc" id="L72">        return true;</span>
     }
 }
 </pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.12.202403310830</span></div></body></html>

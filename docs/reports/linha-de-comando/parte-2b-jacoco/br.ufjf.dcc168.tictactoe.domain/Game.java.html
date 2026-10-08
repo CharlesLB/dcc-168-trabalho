@@ -2,58 +2,39 @@
 
 import br.ufjf.dcc168.tictactoe.domain.InvalidMoveException.Reason;
 
-/**
- * Partida de Jogo da Velha: controla turnos e decide o resultado.
- *
- * &lt;p&gt;Regras definidas pelo grupo (Parte I):
- *
- * &lt;ul&gt;
- *   &lt;li&gt;X sempre começa (D1);
- *   &lt;li&gt;jogada rejeitada não altera tabuleiro, status nem jogador da vez (D4–D7);
- *   &lt;li&gt;jogadas após o fim da partida são rejeitadas (D7);
- *   &lt;li&gt;a vitória é verificada antes do empate: vitória na 9ª jogada é vitória (D9).
- * &lt;/ul&gt;
- */
-<span class="fc" id="L17">public class Game {</span>
+<span class="fc" id="L5">public class Game {</span>
 
-<span class="fc" id="L19">    private final Board board = new Board();</span>
-<span class="fc" id="L20">    private Symbol currentPlayer = Symbol.X;</span>
-<span class="fc" id="L21">    private GameStatus status = GameStatus.IN_PROGRESS;</span>
+<span class="fc" id="L7">    private final Board board = new Board();</span>
+<span class="fc" id="L8">    private Symbol currentPlayer = Symbol.X;</span>
+<span class="fc" id="L9">    private GameStatus status = GameStatus.IN_PROGRESS;</span>
 
-    /**
-     * Executa a jogada do jogador da vez e, se a partida continuar, passa a vez ao adversário.
-     *
-     * &lt;p&gt;A posição já chega válida: a checagem de limites acontece em {@link Position}.
-     *
-     * @throws InvalidMoveException se a partida já terminou (GAME_ALREADY_FINISHED) ou se a célula
-     *     estiver ocupada (CELL_OCCUPIED)
-     */
     public void play(Position position) {
-<span class="fc bfc" id="L32" title="All 2 branches covered.">        if (status.isFinished()) {</span>
-<span class="fc" id="L33">            throw new InvalidMoveException(Reason.GAME_ALREADY_FINISHED);</span>
+<span class="fc bfc" id="L12" title="All 2 branches covered.">        if (status.isFinished()) {</span>
+<span class="fc" id="L13">            throw new InvalidMoveException(Reason.GAME_ALREADY_FINISHED);</span>
         }
-<span class="fc" id="L35">        board.place(currentPlayer, position);</span>
+<span class="fc" id="L15">        board.place(currentPlayer, position);</span>
 
-<span class="fc bfc" id="L37" title="All 2 branches covered.">        if (board.hasCompleteLine(currentPlayer)) {</span>
-<span class="fc" id="L38">            status = GameStatus.victoryOf(currentPlayer);</span>
-<span class="fc bfc" id="L39" title="All 2 branches covered.">        } else if (board.isFull()) {</span>
-<span class="fc" id="L40">            status = GameStatus.DRAW;</span>
+        // D9: a vitória é verificada antes do empate, então vencer na 9ª jogada é vitória.
+<span class="fc bfc" id="L18" title="All 2 branches covered.">        if (board.hasCompleteLine(currentPlayer)) {</span>
+<span class="fc" id="L19">            status = GameStatus.victoryOf(currentPlayer);</span>
+<span class="fc bfc" id="L20" title="All 2 branches covered.">        } else if (board.isFull()) {</span>
+<span class="fc" id="L21">            status = GameStatus.DRAW;</span>
         } else {
-<span class="fc" id="L42">            currentPlayer = currentPlayer.opponent();</span>
+<span class="fc" id="L23">            currentPlayer = currentPlayer.opponent();</span>
         }
-<span class="fc" id="L44">    }</span>
+<span class="fc" id="L25">    }</span>
 
-    /** Jogador da vez. Depois do fim da partida, continua sendo quem fez a última jogada. */
+    /** Depois do fim da partida, continua sendo quem fez a última jogada. */
     public Symbol getCurrentPlayer() {
-<span class="fc" id="L48">        return currentPlayer;</span>
+<span class="fc" id="L29">        return currentPlayer;</span>
     }
 
     public GameStatus getStatus() {
-<span class="fc" id="L52">        return status;</span>
+<span class="fc" id="L33">        return status;</span>
     }
 
     public Board getBoard() {
-<span class="fc" id="L56">        return board;</span>
+<span class="fc" id="L37">        return board;</span>
     }
 }
 </pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.12.202403310830</span></div></body></html>

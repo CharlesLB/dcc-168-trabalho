@@ -2,7 +2,6 @@ package br.ufjf.dcc168.tictactoe.io;
 
 import java.io.PrintStream;
 
-/** Escreve em um PrintStream, por padrão a tela (System.out). */
 public class ConsoleOutputPrinter implements OutputPrinter {
 
     private final PrintStream target;

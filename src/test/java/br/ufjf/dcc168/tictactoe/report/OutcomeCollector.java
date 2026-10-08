@@ -7,7 +7,6 @@ import org.junit.runner.notification.RunListener;
 import java.util.HashMap;
 import java.util.Map;
 
-/** Escuta a execução do JUnit e guarda o resultado de cada método de teste. */
 public class OutcomeCollector extends RunListener {
 
     private final Map<String, TestOutcome> outcomesByTest = new HashMap<>();

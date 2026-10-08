@@ -31,11 +31,8 @@ import br.ufjf.dcc168.tictactoe.support.ScriptedInputReader;
 import org.junit.Test;
 
 /**
- * TestSet-Func, casos que rodam pelo console (Parte I, seção 7.4): CT01, CT02, CT05 e CT17 a CT21.
- *
- * <p>A entrada vem de um {@link ScriptedInputReader} e a saída fica num {@link
- * RecordingOutputPrinter}. Nos casos em que a partida não termina, o roteiro acaba e o ConsoleGame
- * encerra normalmente, sem propagar exceção.
+ * Nos casos em que a partida não termina, o roteiro acaba e o ConsoleGame encerra normalmente, sem
+ * propagar exceção.
  */
 public class ConsoleFunctionalTest {
 
@@ -169,7 +166,6 @@ public class ConsoleFunctionalTest {
                 "Linha não impressa: " + expectedLine, printer.getLines().contains(expectedLine));
     }
 
-    // Entrada rejeitada não altera tabuleiro, status nem jogador da vez (D4).
     private void assertGameUntouched() {
         assertEquals(0, game.getBoard().countFilledCells());
         assertEquals(Symbol.X, game.getCurrentPlayer());

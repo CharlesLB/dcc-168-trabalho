@@ -32,12 +32,6 @@ import br.ufjf.dcc168.tictactoe.support.Moves;
 
 import org.junit.Test;
 
-/**
- * TestSet-Func, casos que rodam direto no domínio (Parte I, seção 7.4): CT03, CT04 e CT06 a CT16.
- *
- * <p>Cada método tem um @TestCase, que vira uma linha da Tabela 2 no ReportGenerator. Convenção de
- * nome: ct{ID}_{cenario}_{resultadoEsperado}.
- */
 public class GameFunctionalTest {
 
     @TestCase(
@@ -260,7 +254,6 @@ public class GameFunctionalTest {
         return game.getBoard().getSymbolAt(new Position(row, column));
     }
 
-    // Jogada rejeitada não altera tabuleiro, status nem jogador da vez (D4–D7).
     private void assertGameUntouched(Game game) {
         assertEquals(0, game.getBoard().countFilledCells());
         assertEquals(Symbol.X, game.getCurrentPlayer());

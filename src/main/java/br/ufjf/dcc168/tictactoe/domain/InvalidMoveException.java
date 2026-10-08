@@ -1,12 +1,5 @@
 package br.ufjf.dcc168.tictactoe.domain;
 
-/**
- * Lançada quando uma jogada viola as regras.
- *
- * <p>Cada motivo corresponde a uma classe de equivalência inválida da Parte I, o que facilita a
- * rastreabilidade entre a tabela de casos de teste e o código. A mensagem de cada motivo é fixa e é
- * a que o console exibe.
- */
 public class InvalidMoveException extends RuntimeException {
 
     public enum Reason {
