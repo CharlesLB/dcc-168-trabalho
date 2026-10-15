@@ -1,5 +1,17 @@
 # Jogo da Velha — DCC168 Teste de Software (2026-3)
 
+# Grupo
+Charles Lelis Braga        Matrícula: 202035015
+
+Michel Gomes de Andrade    Matrícula: 201876037
+
+
+# Especificação do Programa: Jogo da Velha
+
+O Jogo da Velha (Zaslavsky, 1982), também conhecido como Tic-Tac-Toe, é um jogo de estratégia simples disputado entre dois jogadores, representado pelos símbolos “X” e “O”, cujo objetivo é ser o primeiro a formar uma linha com três símbolos iguais, seja na horizontal, vertical ou diagonal em uma matriz de dimensão 3 x 3. Os jogadores se alternam para preencher as células da matriz com os símbolos “X” e “O” respectivamente. O jogo termina em empate se todas as células da matriz forem preenchidas sem um vencedor, ou seja, sem uma linha horizontal, vertical ou diagonal preenchida com seleções iguais.
+
+# Detalhes da Implementação
+
 Projeto Maven que abre igual no Eclipse, IntelliJ e VS Code.
 
 ## Requisitos
