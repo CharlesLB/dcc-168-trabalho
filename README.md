@@ -4,7 +4,7 @@ Projeto Maven que abre igual no Eclipse, IntelliJ e VS Code.
 
 ## Requisitos
 
-- JDK 17+ para rodar o Maven (o código é compilado para Java 8)
+- JDK 25+ (LTS) para rodar o Maven e o jogo (o código é compilado para Java 8)
 - Maven 3.8+
 - Graphviz, para gerar a imagem do grafo de causa-efeito (`dot` no PATH):
   Windows `winget install graphviz` · macOS `brew install graphviz` · Linux `sudo apt install graphviz`
