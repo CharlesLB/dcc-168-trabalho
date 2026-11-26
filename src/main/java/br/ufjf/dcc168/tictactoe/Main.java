@@ -7,6 +7,8 @@ import br.ufjf.dcc168.tictactoe.io.ConsoleOutputPrinter;
 
 public class Main {
 
+    private Main() {}
+
     public static void main(String[] args) {
         ConsoleGame consoleGame =
                 new ConsoleGame(new Game(), new ConsoleInputReader(), new ConsoleOutputPrinter());

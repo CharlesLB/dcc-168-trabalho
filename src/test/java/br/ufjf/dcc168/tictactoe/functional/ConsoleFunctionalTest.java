@@ -1,19 +1,19 @@
 package br.ufjf.dcc168.tictactoe.functional;
 
-import static br.ufjf.dcc168.tictactoe.specification.EquivalenceClass.I1;
-import static br.ufjf.dcc168.tictactoe.specification.EquivalenceClass.I2;
-import static br.ufjf.dcc168.tictactoe.specification.EquivalenceClass.V1;
-import static br.ufjf.dcc168.tictactoe.specification.EquivalenceClass.V10;
-import static br.ufjf.dcc168.tictactoe.specification.EquivalenceClass.V11;
-import static br.ufjf.dcc168.tictactoe.specification.EquivalenceClass.V12;
-import static br.ufjf.dcc168.tictactoe.specification.EquivalenceClass.V13;
-import static br.ufjf.dcc168.tictactoe.specification.EquivalenceClass.V2;
-import static br.ufjf.dcc168.tictactoe.specification.EquivalenceClass.V3;
-import static br.ufjf.dcc168.tictactoe.specification.EquivalenceClass.V4;
-import static br.ufjf.dcc168.tictactoe.specification.EquivalenceClass.V5;
-import static br.ufjf.dcc168.tictactoe.specification.EquivalenceClass.V6;
-import static br.ufjf.dcc168.tictactoe.specification.EquivalenceClass.V7;
-import static br.ufjf.dcc168.tictactoe.support.GameAssertions.assertGameUntouched;
+import static br.ufjf.dcc168.tictactoe.domain.specification.EquivalenceClass.I1;
+import static br.ufjf.dcc168.tictactoe.domain.specification.EquivalenceClass.I2;
+import static br.ufjf.dcc168.tictactoe.domain.specification.EquivalenceClass.V1;
+import static br.ufjf.dcc168.tictactoe.domain.specification.EquivalenceClass.V10;
+import static br.ufjf.dcc168.tictactoe.domain.specification.EquivalenceClass.V11;
+import static br.ufjf.dcc168.tictactoe.domain.specification.EquivalenceClass.V12;
+import static br.ufjf.dcc168.tictactoe.domain.specification.EquivalenceClass.V13;
+import static br.ufjf.dcc168.tictactoe.domain.specification.EquivalenceClass.V2;
+import static br.ufjf.dcc168.tictactoe.domain.specification.EquivalenceClass.V3;
+import static br.ufjf.dcc168.tictactoe.domain.specification.EquivalenceClass.V4;
+import static br.ufjf.dcc168.tictactoe.domain.specification.EquivalenceClass.V5;
+import static br.ufjf.dcc168.tictactoe.domain.specification.EquivalenceClass.V6;
+import static br.ufjf.dcc168.tictactoe.domain.specification.EquivalenceClass.V7;
+import static br.ufjf.dcc168.tictactoe.domain.support.GameAssertions.assertGameUntouched;
 
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertFalse;
@@ -24,10 +24,10 @@ import br.ufjf.dcc168.tictactoe.domain.Game;
 import br.ufjf.dcc168.tictactoe.domain.GameStatus;
 import br.ufjf.dcc168.tictactoe.domain.Position;
 import br.ufjf.dcc168.tictactoe.domain.Symbol;
-import br.ufjf.dcc168.tictactoe.report.TestCase;
-import br.ufjf.dcc168.tictactoe.support.Moves;
-import br.ufjf.dcc168.tictactoe.support.RecordingOutputPrinter;
-import br.ufjf.dcc168.tictactoe.support.ScriptedInputReader;
+import br.ufjf.dcc168.tictactoe.domain.report.TestCase;
+import br.ufjf.dcc168.tictactoe.domain.support.Moves;
+import br.ufjf.dcc168.tictactoe.domain.support.RecordingOutputPrinter;
+import br.ufjf.dcc168.tictactoe.domain.support.ScriptedInputReader;
 
 import org.junit.Test;
 

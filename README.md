@@ -39,6 +39,22 @@ mvn -q exec:java                           # joga no console (Ctrl+D / Ctrl+Z en
 mvn test-compile exec:java@report          # gera tabelas e grafo do relatório
 ```
 
+## Cobertura estrutural (Parte II)
+
+| Etapa | Conjunto                    | Fluxo de controle (JaCoCo = EclEmma) | Fluxo de dados (BA-DUA = Baduíno)                         |
+| ----- | --------------------------- | ------------------------------------ | --------------------------------------------------------- |
+| II-A  | TestSet-Func                | `mvn verify -Dtest=FunctionalSuite`  | `scripts/cobertura-fluxo-de-dados.sh FunctionalSuite <pasta>` |
+| II-B  | TestSet-Func + TestSet-Estr | `mvn verify -Dtest=AllTestsSuite`    | `scripts/cobertura-fluxo-de-dados.sh AllTestsSuite <pasta>`   |
+
+O relatório do JaCoCo sai em `target/site/jacoco/index.html`. O script do BA-DUA baixa a
+ferramenta para `target/ba-dua` e grava `ba-dua.xml` e `ba-dua.txt` na pasta indicada. Os
+relatórios entregues estão em `docs/reports/parte-2a/` e `docs/reports/parte-2b/`.
+
+No Eclipse: botão direito em `FunctionalSuite` ou `AllTestsSuite` → _Coverage As → JUnit Test_
+(EclEmma) e, com o plugin Baduíno, o mesmo para fluxo de dados.
+
+`scripts/empacotar-entrega.sh` monta o .zip da entrega em `entrega/`.
+
 ## Estrutura
 
 ```
@@ -50,13 +66,14 @@ src/main/java/br/ufjf/dcc168/tictactoe/
 └── Main.java  único ponto que conhece System.in / System.out
 
 src/test/java/br/ufjf/dcc168/tictactoe/
-├── functional/  TestSet-Func (CT01–CT21)          métodos ctNN_...
-├── suites/      FunctionalSuite (roda o TestSet-Func)
-├── io/          testes da lib de I/O
-├── specification/  O QUE O GRUPO ESCREVE: classes de equivalência e grafo de causa-efeito
-├── causeeffect/    modelo do grafo, tabela de decisão e exportação para .dot
-├── report/         @TestCase e ReportGenerator (gera tabelas, .dot e .png)
-└── support/        ScriptedInputReader, RecordingOutputPrinter (dublês) e Moves (jogadas)
+├── functional/  Teste Funcional: TestSet-Func (CT01 a CT21), métodos ctNN_...
+├── structural/  Teste Estrutural: TestSet-Estr (CE01 a CE05), métodos ceNN_...
+└── domain/      base dos testes (não são casos de teste)
+    ├── suites/         FunctionalSuite (II-A), StructuralSuite e AllTestsSuite (II-B)
+    ├── specification/  classes de equivalência e grafo de causa-efeito
+    ├── causeeffect/    modelo do grafo, tabela de decisão e exportação para .dot
+    ├── report/         @TestCase e ReportGenerator (gera tabelas, .dot e .png)
+    └── support/        ScriptedInputReader, RecordingOutputPrinter (dublês) e Moves (jogadas)
 ```
 
 ## Artefatos do relatório (gerados automaticamente)

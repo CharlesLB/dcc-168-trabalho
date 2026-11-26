@@ -40,6 +40,33 @@
       </plugin>
 
       <!--
+        Cobertura de fluxo de controle (JaCoCo, o mesmo motor do EclEmma):
+          mvn verify -Dtest=FunctionalSuite → Parte II-A (só o TestSet-Func)
+          mvn verify -Dtest=AllTestsSuite   → Parte II-B (TestSet-Func + TestSet-Estr)
+        Relatório em target/site/jacoco/index.html
+      -->
+      <plugin>
+        <groupId>org.jacoco</groupId>
+        <artifactId>jacoco-maven-plugin</artifactId>
+        <version>0.8.14</version>
+        <executions>
+          <execution>
+            <id>prepare-agent</id>
+            <goals>
+              <goal>prepare-agent</goal>
+            </goals>
+          </execution>
+          <execution>
+            <id>report</id>
+            <phase>verify</phase>
+            <goals>
+              <goal>report</goal>
+            </goals>
+          </execution>
+        </executions>
+      </plugin>
+
+      <!--
         mvn exec:java                     → joga no console
         mvn test-compile exec:java@report → gera tabelas e grafo em docs/reports/generated
       -->
@@ -54,7 +81,7 @@
           <execution>
             <id>report</id>
             <configuration>
-              <mainClass>br.ufjf.dcc168.tictactoe.report.ReportGenerator</mainClass>
+              <mainClass>br.ufjf.dcc168.tictactoe.domain.report.ReportGenerator</mainClass>
               <classpathScope>test</classpathScope>
             </configuration>
           </execution>
